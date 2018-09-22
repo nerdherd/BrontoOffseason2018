@@ -45,7 +45,7 @@ public class Wrist extends Subsystem {
 	m_wrist.config_kD(0, SuperstructureConstants.kWristD, 0);
 	m_wrist.configMotionCruiseVelocity(SuperstructureConstants.kWristCruiseVelocity, 0);
 	m_wrist.configMotionAcceleration(SuperstructureConstants.kWristAcceleration, 0);
-	m_wrist.setNeutralMode(NeutralMode.Coast);
+	m_wrist.setNeutralMode(NeutralMode.Brake);
 
 	m_wrist.configPeakOutputForward(SuperstructureConstants.kWristMaxVoltageForward / 12, 0);
 	m_wrist.configPeakOutputReverse(SuperstructureConstants.kWristMaxVoltageReverse / 12, 0);
@@ -185,10 +185,10 @@ public class Wrist extends Subsystem {
 
     public void reportToSmartDashboard() {
 	// ----- COMMENT THESE OUT WHEN GOING TO FIELD ----- //
-//	SmartDashboard.putNumber("Wrist Desired Position", angleAbsoluteToTicks(getDesiredAbsoluteAngleGoingUp()));
-//	SmartDashboard.putNumber("Wrist Desired Absolute Angle", getDesiredAbsoluteAngleGoingUp());
-//	SmartDashboard.putNumber("Wrist Voltage", getVoltage());
-//	SmartDashboard.putNumber("Wrist Current", getCurrent());
+	// SmartDashboard.putNumber("Wrist Desired Position", angleAbsoluteToTicks(getDesiredAbsoluteAngleGoingUp()));
+	// SmartDashboard.putNumber("Wrist Desired Absolute Angle", getDesiredAbsoluteAngleGoingUp());
+	// SmartDashboard.putNumber("Wrist Voltage", getVoltage());
+	// SmartDashboard.putNumber("Wrist Current", getCurrent());
 	// ----- COMMENT THESE OUT WHEN GOING TO FIELD ----- //
 
 	SmartDashboard.putNumber("Wrist Position", getPosition());

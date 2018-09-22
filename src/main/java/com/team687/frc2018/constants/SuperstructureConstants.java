@@ -6,12 +6,12 @@ package com.team687.frc2018.constants;
 
 public class SuperstructureConstants {
 
-    public static final double kArmF = 0.8197;
+    public static final double kArmF = 0.998;
     public static final double kArmP = 4;
     public static final double kArmI = 0;
     public static final double kArmD = 0;
-    public static final int kArmCruiseVelocity = 1305;
-    public static final int kArmAcceleration = 1200;
+    public static final int kArmCruiseVelocity = 820;
+    public static final int kArmAcceleration = 800;
 
     public static final double kArmMaxVoltageForward = 12;
     public static final double kArmMaxVoltageReverse = -12;
@@ -42,12 +42,12 @@ public class SuperstructureConstants {
     public static final double kShoulderToWristPivot = 40;
     public static final double kWristPivotToTip = 20;
 
-    public static final double kWristF = 0.681318681;
+    public static final double kWristF = 0.894230769;
     public static final double kWristP = 3;
     public static final double kWristI = 0;
     public static final double kWristD = 0;
-    public static final int kWristCruiseVelocity = 1241;
-    public static final int kWristAcceleration = 1254;
+    public static final int kWristCruiseVelocity = 1040;
+    public static final int kWristAcceleration = 1040;
     public static final double kWristMaxVoltageForward = 12;
     public static final double kWristMaxVoltageReverse = -12;
 
@@ -56,10 +56,11 @@ public class SuperstructureConstants {
     public static final int kWristContinuousCurrent = 40;
 
     public static final int kWristResetPosition = 0;
-    public static final int kWristIntakePos = -3480;
-    public static final int kWristStowPos = -50;
+    public static final int kWristIntakePos = -2960;
+    public static final int kWristStowPos = -480;
     public static final int kWristStowArmOffsetPos = -919;
     public static final int kWristBackwardsScorePos = -2200; // used to be -1678
+    public static final int kWristFlipCubePos = -2400;
 
     public static final int kWristTolerance = 67;
     public static final int kWristForwardSoftLimit = -1678;

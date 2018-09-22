@@ -22,10 +22,11 @@ public class RobotMap {
 
     public static final int kArmID = 7;
     public static final int kWristID = 2;
-    public static final int kIntakeRollersID = 6;
+    public static final int kIntakeRollers1ID = 6;
+    public static final int kIntakeRollers2ID = 10;
 
-    public static final int kIntakeClawID1 = 0;
-    public static final int kIntakeClawID2 = 2;
+    public static final int kIntakeClawID1 = 2;
+    public static final int kIntakeClawID2 = 0;
     
     public static final int kAntiFoulThingID = 10;
 

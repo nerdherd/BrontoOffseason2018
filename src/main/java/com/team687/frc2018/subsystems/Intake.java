@@ -17,20 +17,31 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
 
-    private final TalonSRX m_rollers;
+    private final TalonSRX m_rollers1, m_rollers2;
     private final DoubleSolenoid m_claw;
 
     public Intake() {
-	m_rollers = new TalonSRX(RobotMap.kIntakeRollersID);
-	m_rollers.setNeutralMode(NeutralMode.Coast);
-	m_rollers.setStatusFramePeriod(StatusFrame.Status_1_General, 20, 0);
+    m_rollers1 = new TalonSRX(RobotMap.kIntakeRollers1ID);
+    m_rollers2 = new TalonSRX(RobotMap.kIntakeRollers2ID);
 
-	m_rollers.setInverted(true);
+	m_rollers1.setNeutralMode(NeutralMode.Coast);
+	m_rollers1.setStatusFramePeriod(StatusFrame.Status_1_General, 20, 0);
 
-	m_rollers.configPeakOutputForward(1, 0);
-	m_rollers.configPeakOutputReverse(-1, 0);
-	m_rollers.enableCurrentLimit(false);
+	m_rollers1.setInverted(true);
 
+	m_rollers1.configPeakOutputForward(1, 0);
+	m_rollers1.configPeakOutputReverse(-1, 0);
+	m_rollers1.enableCurrentLimit(false);
+
+    m_rollers2.setNeutralMode(NeutralMode.Coast);
+	m_rollers2.setStatusFramePeriod(StatusFrame.Status_1_General, 20, 0);
+
+	m_rollers2.setInverted(false);
+
+	m_rollers2.configPeakOutputForward(1, 0);
+	m_rollers2.configPeakOutputReverse(-1, 0);
+    m_rollers2.enableCurrentLimit(false);
+    
 	m_claw = new DoubleSolenoid(RobotMap.kIntakeClawID1, RobotMap.kIntakeClawID2);
     }
 
@@ -60,15 +71,16 @@ public class Intake extends Subsystem {
     }
 
     public void setRollerPower(double power) {
-	m_rollers.set(ControlMode.PercentOutput, power);
+    m_rollers1.set(ControlMode.PercentOutput, power);
+    m_rollers2.set(ControlMode.PercentOutput, power);
     }
 
     public double getVoltage() {
-	return m_rollers.getMotorOutputVoltage();
+	return m_rollers1.getMotorOutputVoltage();
     }
 
     public double getCurrent() {
-	return m_rollers.getOutputCurrent();
+	return m_rollers1.getOutputCurrent();
     }
 
     public void reportToSmartDashboard() {
