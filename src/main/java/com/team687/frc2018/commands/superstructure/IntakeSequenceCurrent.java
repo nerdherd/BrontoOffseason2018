@@ -50,7 +50,7 @@ public class IntakeSequenceCurrent extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Timer.getFPGATimestamp() > (m_timerStart + 0.5);
+	    return Timer.getFPGATimestamp() > (m_timerStart + 0.5);
     }
 
     @Override

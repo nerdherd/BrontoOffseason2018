@@ -56,7 +56,8 @@ public class OI {
     public JoystickButton intake_1;
     public JoystickButton outtake_2;
     public JoystickButton stopIntake_3;
-    public JoystickButton intakePosition_4;
+    public JoystickButton openCloseClaw_4;
+    // public JoystickButton intakePosition_4;
 
     public JoystickButton switchPosition_11;
     public JoystickButton forwardsToStow_9;
@@ -66,8 +67,6 @@ public class OI {
 
     public JoystickButton openClaw_6;
     public JoystickButton closeClaw_5;
-
-    public JoystickButton openCloseClaw_4;
 
     public JoystickButton flipCube_12;
 
