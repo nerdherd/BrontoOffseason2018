@@ -1,5 +1,4 @@
 package com.team687.frc2018.subsystems;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,460 +8,325 @@ import java.nio.file.Paths;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team687.frc2018.Robot;
+import com.kauailabs.navx.frc.AHRS;
 import com.team687.frc2018.RobotMap;
+import com.team687.frc2018.commands.drive.characterization.VelocityPIDF;
 import com.team687.frc2018.commands.drive.teleop.ArcadeDrive;
 import com.team687.frc2018.constants.DriveConstants;
-import com.team687.frc2018.utilities.NerdyMath;
-import com.team687.lib.kauailabs.navx.frc.AHRS;
-import com.team687.lib.kauailabs.sf2.frc.navXSensor;
-import com.team687.lib.kauailabs.sf2.orientation.OrientationHistory;
+import com.team687.frc2018.utilities.NerdyTalon;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
 
 /**
- * Drive subsystem
+ *
  */
-
 public class Drive extends Subsystem {
 
-    private final TalonSRX m_leftMaster;
-    private final TalonSRX m_rightMaster;
-
-    private final TalonSRX m_leftSlave1;
-    private final TalonSRX m_rightSlave1;
-
-    private final AHRS m_nav;
-    private final navXSensor m_navxsensor;
-    private final OrientationHistory m_orientationHistory;
-
-    private double m_initTime;
-    private double m_currentTime;
-
-    private boolean m_brakeModeOn;
-
+	private final NerdyTalon m_leftMaster, m_leftSlave1;
+	private final NerdyTalon m_rightMaster, m_rightSlave1;
+	private final AHRS m_nav;
+	
+	private double m_previousDistance, m_currentX, m_currentY, m_angleOffset, m_xOffset, m_yOffset;
+    
     private String m_filePath1 = "/media/sda1/logs/";
-    private String m_filePath2 = "/home/lvuser/logs/";
+	private String m_filePath2 = "/home/lvuser/logs/";
+	private String m_fileName = "2018_09_15_pathfinder_test";
     private File m_file;
     public FileWriter m_writer;
     private boolean writeException = false;
-    private double m_logStartTime = 0;
+	private double m_logStartTime = 0;
+	private double m_leftDesiredVel, m_rightDesiredVel;
+	private VelocityPIDF m_velocityPIDF;
+	private Notifier m_velocityNotifier;
+    
+	public Drive() {
+		
+		m_nav = new AHRS(SPI.Port.kMXP);
+		
+		m_leftMaster = new NerdyTalon(RobotMap.kLeftMasterTalonID);
+		m_leftSlave1 = new NerdyTalon(RobotMap.kLeftSlaveTalon1ID);
+		
+		m_rightMaster = new NerdyTalon(RobotMap.kRightMasterTalonID);
+		m_rightSlave1 = new NerdyTalon(RobotMap.kRightSlaveTalon1ID);
+		
+		
+		m_leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		m_rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		
+		m_rightSlave1.follow(m_rightMaster);
+		
+		m_leftSlave1.follow(m_leftMaster);
+				
+		m_leftMaster.setInverted(true);
+		m_leftSlave1.setInverted(true);
+		
+		m_rightMaster.setInverted(false);
+		m_rightSlave1.setInverted(false);
 
-    public Drive() {
-	m_leftMaster = new TalonSRX(RobotMap.kLeftMasterTalonID);
-	m_leftSlave1 = new TalonSRX(RobotMap.kLeftSlaveVictorID);
-	m_rightMaster = new TalonSRX(RobotMap.kRightMasterTalonID);
-	m_rightSlave1 = new TalonSRX(RobotMap.kRightSlaveVictorID);
+		m_leftMaster.setSensorPhase(false);
+		m_rightMaster.setSensorPhase(false);
+		
+		// m_rightMaster.configPIDF(DriveConstants.kRightP, DriveConstants.kRightI, DriveConstants.kRightD, DriveConstants.kRightF, 0);
+		// m_leftMaster.configPIDF(DriveConstants.kLeftP, DriveConstants.kLeftI, DriveConstants.kLeftD, DriveConstants.kLeftF, 0);
 
-	m_leftSlave1.follow(m_leftMaster);
-	m_rightSlave1.follow(m_rightMaster);
+		// m_leftMaster.configMotionMagic(DriveConstants.kLeftAcceleration, DriveConstants.kLeftCruiseVelocity);
+		// m_rightMaster.configMotionMagic(DriveConstants.kRightAcceleration, DriveConstants.kRightCruiseVelocity);
 
-	m_leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-	m_leftMaster.setStatusFramePeriod(StatusFrame.Status_1_General, 20, 0);
-	m_leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 20, 0);
-	m_leftMaster.setInverted(false);
-	m_leftSlave1.setInverted(false);
-	m_leftMaster.setSensorPhase(true);
-	m_leftMaster.configForwardSoftLimitEnable(false, 0);
-	m_leftMaster.configReverseSoftLimitEnable(false, 0);
-	m_leftSlave1.configForwardSoftLimitEnable(false, 0);
-	m_leftSlave1.configReverseSoftLimitEnable(false, 0);
+		m_leftMaster.setNeutralMode(NeutralMode.Brake);
+		m_leftSlave1.setNeutralMode(NeutralMode.Brake);
+		
+		m_rightMaster.setNeutralMode(NeutralMode.Brake);
+		m_rightSlave1.setNeutralMode(NeutralMode.Brake);
+		
+		m_rightMaster.configDefaultSettings();
+		m_rightSlave1.configDefaultSettings();
 
-	m_leftMaster.config_kF(0, DriveConstants.kLeftVelocityF, 0);
-	m_leftMaster.config_kP(0, DriveConstants.kLeftVelocityP, 0);
-	m_leftMaster.config_kI(0, DriveConstants.kLeftVelocityI, 0);
-	m_leftMaster.config_kD(0, DriveConstants.kLeftVelocityD, 0);
+		m_leftMaster.configDefaultSettings();
+		m_leftSlave1.configDefaultSettings();
 
-	m_rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-	m_rightMaster.setStatusFramePeriod(StatusFrame.Status_1_General, 20, 0);
-	m_rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 20, 0);
-	m_rightMaster.setInverted(true);
-	m_rightSlave1.setInverted(true);
-	m_rightMaster.setSensorPhase(true);
-	m_rightMaster.configForwardSoftLimitEnable(false, 0);
-	m_rightMaster.configReverseSoftLimitEnable(false, 0);
-	m_rightSlave1.configForwardSoftLimitEnable(false, 0);
-	m_rightSlave1.configReverseSoftLimitEnable(false, 0);
+		m_rightMaster.configPIDF(DriveConstants.kRightVelocityP, 0, DriveConstants.kRightVelocityD, DriveConstants.kRightV, 0);
+		m_leftMaster.configPIDF(DriveConstants.kLeftVelocityP, 0, DriveConstants.kLeftVelocityD, DriveConstants.kLeftV, 0);
+	}
+	
+	public void setPower(double leftPower, double rightPower) {
 
-	m_rightMaster.config_kF(0, DriveConstants.kRightVelocityF, 0);
-	m_rightMaster.config_kP(0, DriveConstants.kRightVelocityP, 0);
-	m_rightMaster.config_kI(0, DriveConstants.kRightVelocityI, 0);
-	m_rightMaster.config_kD(0, DriveConstants.kRightVelocityD, 0);
-
-	m_leftMaster.setNeutralMode(NeutralMode.Brake);
-	m_leftSlave1.setNeutralMode(NeutralMode.Brake);
-	m_rightMaster.setNeutralMode(NeutralMode.Brake);
-	m_rightSlave1.setNeutralMode(NeutralMode.Brake);
-	m_brakeModeOn = true;
-
-	m_leftMaster.configPeakCurrentLimit(0, 0);
-	m_leftMaster.configPeakCurrentDuration(0, 0);
-	m_leftMaster.configContinuousCurrentLimit(DriveConstants.kContinuousCurrentLimit, 0);
-	m_leftMaster.enableCurrentLimit(false);
-//	 m_leftSlave1.enableCurrentLimit(false);
-	m_leftMaster.configOpenloopRamp(DriveConstants.kVoltageRampRate, 0);
-	m_leftMaster.configClosedloopRamp(DriveConstants.kVoltageRampRate, 0);
-	m_leftMaster.configPeakOutputForward(1, 0);
-	m_leftMaster.configPeakOutputReverse(-1, 0);
-	m_leftSlave1.configPeakOutputForward(1, 0);
-	m_leftSlave1.configPeakOutputReverse(-1, 0);
-
-	m_rightMaster.configPeakCurrentLimit(0, 0);
-	m_rightMaster.configPeakCurrentDuration(0, 0);
-	m_rightMaster.configContinuousCurrentLimit(DriveConstants.kContinuousCurrentLimit, 0);
-	m_rightMaster.enableCurrentLimit(false);
-	// m_rightSlave1.enableCurrentLimit(false);
-	m_rightMaster.configOpenloopRamp(DriveConstants.kVoltageRampRate, 0);
-	m_rightMaster.configClosedloopRamp(DriveConstants.kVoltageRampRate, 0);
-	m_rightMaster.configPeakOutputForward(1, 0);
-	m_rightMaster.configPeakOutputReverse(-1, 0);
-	m_rightSlave1.configPeakOutputForward(1, 0);
-	m_rightSlave1.configPeakOutputReverse(-1, 0);
-
-	m_nav = new AHRS(SPI.Port.kMXP);
-	m_navxsensor = new navXSensor(m_nav, "Drivetrain Orientation");
-	m_orientationHistory = new OrientationHistory(m_navxsensor, m_nav.getRequestedUpdateRate() * 10);
+		m_leftMaster.set(ControlMode.PercentOutput, leftPower);
+		m_rightMaster.set(ControlMode.PercentOutput, rightPower);
     }
-
-    @Override
-    protected void initDefaultCommand() {
-	setDefaultCommand(new ArcadeDrive());
-    }
-
-    /**
-     * @param leftPercentOutput
-     *            (from -1.0 to +1.0)
-     * @param rightPercentOutput
-     *            (from -1.0 to +1.0)
-     */
-    public void setPower(double leftPercentOutput, double rightPercentOutput) {
-    	SmartDashboard.putNumber("Left Out", leftPercentOutput);
-    	SmartDashboard.putNumber("Right Out", rightPercentOutput);
-    	
-	m_leftMaster.set(ControlMode.PercentOutput, leftPercentOutput);
-	m_rightMaster.set(ControlMode.PercentOutput, rightPercentOutput);
-    }
-
-    /**
-     * @param leftVoltage
-     *            (from -12V to +12V)
-     * @param rightVoltage
-     *            (from -12V to +12V)
-     */
-    public void setVoltage(double leftVoltage, double rightVoltage) {
-	double leftBusVoltage = m_leftMaster.getBusVoltage();
-	double rightBusVoltage = m_rightMaster.getBusVoltage();
-	m_leftMaster.set(ControlMode.PercentOutput, leftVoltage / leftBusVoltage);
-	m_rightMaster.set(ControlMode.PercentOutput, rightVoltage / rightBusVoltage);
-    }
-
-    /**
-     * @param leftVelocity
-     *            (ticks / 100ms)
-     * @param rightVelocity
-     *            (ticks / 100ms)
-     */
-    public void setVelocity(double leftVelocity, double rightVelocity) {
-	m_leftMaster.set(ControlMode.Velocity, leftVelocity);
-	m_rightMaster.set(ControlMode.Velocity, rightVelocity);
-    }
-
-    /**
-     * @param leftPercentVelocity
-     *            (from -1.0 to +1.0)
-     * @param rightPercentVelocity
-     *            (from -1.0 to +1.0)
-     */
-    public void setPercentVelocity(double leftPercentVelocity, double rightPercentVelocity) {
-	m_leftMaster.set(ControlMode.Velocity, leftPercentVelocity * DriveConstants.kMaxVelocity);
-	m_rightMaster.set(ControlMode.Velocity, rightPercentVelocity * DriveConstants.kMaxVelocity);
-    }
-
-    public void setBrakeMode(boolean enabled) {
-	if (enabled) {
-	    m_leftMaster.setNeutralMode(NeutralMode.Brake);
-	    m_leftSlave1.setNeutralMode(NeutralMode.Brake);
-	    m_rightMaster.setNeutralMode(NeutralMode.Brake);
-	    m_rightSlave1.setNeutralMode(NeutralMode.Brake);
-	} else {
-	    m_leftMaster.setNeutralMode(NeutralMode.Coast);
-	    m_leftSlave1.setNeutralMode(NeutralMode.Coast);
-	    m_rightMaster.setNeutralMode(NeutralMode.Coast);
-	    m_rightSlave1.setNeutralMode(NeutralMode.Coast);
+	
+	public void setVoltage(double leftVoltage, double rightVoltage) {
+		m_leftMaster.set(ControlMode.PercentOutput, leftVoltage/12);
+		m_rightMaster.set(ControlMode.PercentOutput, rightVoltage/12);
 	}
 
-	m_brakeModeOn = enabled;
-    }
-
-    public boolean getBrakeMode() {
-	return m_brakeModeOn;
-    }
-
-    public double getCurrentYaw() {
-	return m_nav.getYaw();
-    }
-
-    public double getCurrentPitch() {
-	return m_nav.getPitch();
-    }
-
-    public double getCurrentRoll() {
-	return m_nav.getRoll();
-    }
-
-    public double getCurrentYawRadians() {
-	return NerdyMath.degreesToRadians(m_nav.getYaw());
-    }
-
-    public double getCurrentPitchRadians() {
-	return NerdyMath.degreesToRadians(m_nav.getPitch());
-    }
-
-    public double getCurrentRollRadians() {
-	return NerdyMath.degreesToRadians(m_nav.getRoll());
-    }
-
-    public double getNavTimestamp() {
-	return m_nav.getLastSensorTimestamp();
-    }
-
-    public double getHistoricalYaw(long timestamp) {
-	return m_orientationHistory.getYawDegreesAtTime(timestamp);
-    }
-
-    public double timeMachineYaw(double processingTime) {
-	long navxTimestamp = m_nav.getLastSensorTimestamp();
-	navxTimestamp -= (1000 * processingTime); /* look backwards in time */
-	return getHistoricalYaw(navxTimestamp);
-    }
-
-    public void resetGyro() {
-	m_nav.reset();
-    }
-
-    public double getCurrentAccelX() {
-	return m_nav.getWorldLinearAccelX();
-    }
-
-    public double getCurrentAccelY() {
-	return m_nav.getWorldLinearAccelY();
-    }
-
-    public double getCurrentAccelZ() {
-	return m_nav.getWorldLinearAccelZ();
-    }
-
-    public double getInitTime() {
-	return m_initTime;
-    }
-
-    public double getCurrentTime() {
-	return m_currentTime;
-    }
-
-    public double getLeftPosition() {
-	return m_leftMaster.getSelectedSensorPosition(0);
-    }
-
-    public double getRightPosition() {
-	return m_rightMaster.getSelectedSensorPosition(0);
-    }
-
-    public double getDrivetrainPosition() {
-	return (getLeftPosition() + getRightPosition()) / 2;
-    }
-
-    public double getLeftVelocity() {
-	return m_leftMaster.getSelectedSensorVelocity(0);
-    }
-
-    public double getRightVelocity() {
-	return m_rightMaster.getSelectedSensorVelocity(0);
-    }
-
-    public double getRightMasterCurrent() {
-	return m_rightMaster.getOutputCurrent();
-    }
-
-    public double getLeftMasterCurrent() {
-	return m_leftMaster.getOutputCurrent();
-    }
-
-    public double getRightSlaveCurrent() {
-	return m_rightSlave1.getOutputCurrent();
-    }
-
-    public double getLeftSlaveCurrent() {
-	return m_leftSlave1.getOutputCurrent();
-    }
-
-    public double getRightMasterVoltage() {
-	return m_rightMaster.getMotorOutputVoltage();
-    }
-
-    public double getLeftMasterVoltage() {
-	return m_leftMaster.getMotorOutputVoltage();
-    }
-
-    public double getRightSlaveVoltage() {
-	return m_rightSlave1.getMotorOutputVoltage();
-    }
-
-    public double getLeftSlaveVoltage() {
-	return m_leftSlave1.getMotorOutputVoltage();
-    }
-
-    public void resetEncoders() {
-	m_leftMaster.setSelectedSensorPosition(0, 0, 0);
-	m_rightMaster.setSelectedSensorPosition(0, 0, 0);
-    }
-
-    public void stopDrive() {
-	setPower(0, 0);
-    }
-
-    public boolean testDriveSubsystem() {
-	boolean failed = false;
-
-	double expectedSpeed = getRightVelocity();
-	if (Math.abs(getLeftVelocity() - expectedSpeed) > DriveConstants.kVelocityEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Drive Velocities Unequal (Drive subsystem test)", false);
-	    System.out.println("Drive Velocities Unequal (Drive subsystem test)");
+	public void setPowerZero() {
+		m_leftMaster.set(ControlMode.PercentOutput, 0);
+		m_rightMaster.set(ControlMode.PercentOutput, 0);
+	}
+	
+	public void addDesiredVelocities(double leftVel, double rightVel) {
+		m_leftDesiredVel = leftVel;
+		m_rightDesiredVel = rightVel;
 	}
 
-	double expectedCurrent = getRightMasterCurrent();
-	if (Math.abs(getLeftMasterCurrent() - expectedCurrent) > DriveConstants.kCurrentEpsilon
-		|| Math.abs(getRightSlaveCurrent() - expectedCurrent) > DriveConstants.kCurrentEpsilon
-		|| Math.abs(getLeftSlaveCurrent() - expectedCurrent) > DriveConstants.kCurrentEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Drive Currents Unequal (Drive subsystem test)", false);
-	    System.out.println("Drive Currents Unequal (Drive subsystem test)");
+	public void setPositionMotionMagic(double leftPosition, double rightPosition) {
+		m_leftMaster.set(ControlMode.MotionMagic, leftPosition);
+		m_rightMaster.set(ControlMode.MotionMagic, rightPosition);
 	}
-
-	double expectedVoltage = getRightMasterVoltage();
-	if (Math.abs(getLeftMasterVoltage() - expectedVoltage) > DriveConstants.kVoltageEpsilon
-		|| Math.abs(getRightSlaveVoltage() - expectedVoltage) > DriveConstants.kVoltageEpsilon
-		|| Math.abs(getLeftSlaveVoltage() - expectedVoltage) > DriveConstants.kVoltageEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Drive Voltages Unequal (Drive subsystem test)", false);
-	    System.out.println("Drive Voltages Unequal (Drive subsystem test)");
+	
+	public void setVelocity(double leftVel, double rightVel) {
+		m_rightMaster.set(ControlMode.Velocity, rightVel);
+		m_leftMaster.set(ControlMode.Velocity, leftVel);
+		
 	}
-
-	if (getLeftMasterCurrent() == 0 || getRightMasterCurrent() == 0 || getLeftSlaveCurrent() == 0
-		|| getRightMasterCurrent() == 0) {
-	    failed = true;
-	    DriverStation.reportError("Drive Current at 0 (Drive subsystem test)", false);
-	    System.out.println("Drive Current at 0 (Drive subsystem test)");
+	
+	public void resetEncoders() {
+		m_leftMaster.setSelectedSensorPosition(0, 0, 0);
+		m_rightMaster.setSelectedSensorPosition(0, 0, 0);
 	}
-
-	if (getLeftMasterVoltage() == 0 || getRightMasterVoltage() == 0 || getLeftSlaveVoltage() == 0
-		|| getRightMasterVoltage() == 0) {
-	    failed = true;
-	    DriverStation.reportError("Drive Voltage at 0 (Drive subsystem test)", false);
-	    System.out.println("Drive Voltage at 0 (Drive subsystem test)");
+	public double getLeftOutputVoltage() {
+		return m_leftMaster.getMotorOutputVoltage();
 	}
-
-	return failed;
+	
+	public double getLeftMasterCurrent() {
+		return m_leftMaster.getOutputCurrent();
+	}
+	
+	public double getLeftMasterPosition() {
+		return m_leftMaster.getSelectedSensorPosition(0);
+	}
+	
+	public double getLeftMasterSpeed() {
+		return m_leftMaster.getSelectedSensorVelocity(0);
+	}
+	
+	
+	public double getRightOutputVoltage() {
+		return m_rightMaster.getMotorOutputVoltage();
+	}
+	
+	public double getRightMasterCurrent() {
+		return m_rightMaster.getOutputCurrent();
+	}
+	
+	public double getRightMasterPosition() {
+		return m_rightMaster.getSelectedSensorPosition(0);
+	}
+	
+	public double getRightMasterSpeed() {
+		return m_rightMaster.getSelectedSensorVelocity(0);
+	}
+	
+	
+	public double getRawYaw() {
+		return Pathfinder.boundHalfDegrees(m_nav.getYaw());
+	}
+	
+	public void resetYaw() {
+		m_nav.reset();
+	}
+	
+	public double getAverageEncoderPosition() {
+		return (getRightMasterPosition() + getLeftMasterPosition())/2;
+	}
+	
+	public double getAngle() {
+//		converts angle from -180 to 180 to 0 to 360	
+//		sets positive y as 0 deg, robot's front is 0 deg
+		return (360 - getRawYaw()) % 360;
+		
+	}
+	
+    public void initDefaultCommand() {
+        setDefaultCommand(new ArcadeDrive());
+    }   
+    
+	public void resetXY() {
+		m_currentX = 0;
+		m_currentY = 0;
+	}
+	
+    public void calcXY() {
+    	// calculate x,y coordinates when moving in straight lines and turning in place, DOES NOT WORK
+    	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+    	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
+    	double angle = getRawYaw();
+    	m_currentX = m_currentX + m_distanceTraveled * Math.sin(Math.toRadians(angle));
+    	m_currentY = m_currentY + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+    	m_previousDistance = m_currentDistance;
     }
+    
+    public double getXpos() {
+    	return m_currentX;
+    }
+    
+    public double getYpos() {
+    	return m_currentY;
+    }
+	
+	public double ticksToFeet(double ticks) {
+		return ticks / DriveConstants.kTicksPerFoot;
+	}
+	
+	public double feetToTicks(double feet) {
+		return feet * DriveConstants.kTicksPerFoot;
+	}
+
+	public double getLeftVelocityFeet() {
+		return ticksToFeet(m_leftMaster.getSelectedSensorVelocity(0) / 0.1);
+	}
+
+	public double getRightVelocityFeet() {
+		return ticksToFeet(m_rightMaster.getSelectedSensorVelocity(0) / 0.1);
+	}
+
+	public double getLeftPositionFeet() {
+		return ticksToFeet(m_leftMaster.getSelectedSensorPosition(0));
+	}
+
+	public double getRightPositionFeet() {
+		return m_rightMaster.getSelectedSensorPosition(0) / DriveConstants.kTicksPerFoot;
+	}
+
+	public double fpsToTalonVelocityUnits(double fps) {
+		return feetToTicks(fps)/10;
+	}
+
+	public void setVelocityFPS(double leftVel, double rightVel) {
+		setVelocity(fpsToTalonVelocityUnits(leftVel), fpsToTalonVelocityUnits(rightVel));
+	}
+
 
     public void reportToSmartDashboard() {
-	// ----- COMMENT THESE OUT WHEN GOING TO FIELD ----- //
-//	SmartDashboard.putBoolean("Brake Mode On", m_brakeModeOn);
-//	SmartDashboard.putNumber("Left Master Voltage", getLeftMasterVoltage());
-//	SmartDashboard.putNumber("Left Slave 1 Voltage", getLeftSlaveVoltage());
-//	SmartDashboard.putNumber("Right Master Voltage", getRightMasterVoltage());
-//	SmartDashboard.putNumber("Right Slave 1 Voltage", getRightSlaveVoltage());
-//	SmartDashboard.putNumber("Left Master Current", getLeftMasterCurrent());
-//	SmartDashboard.putNumber("Left Slave 1 Current", getLeftSlaveCurrent());
-//	SmartDashboard.putNumber("Right Master Current", getRightMasterCurrent());
-//	SmartDashboard.putNumber("Right Slave 1 Current", getRightSlaveCurrent());
-	SmartDashboard.putNumber("Right Drive Velocity", getRightVelocity());
-	SmartDashboard.putNumber("Left Drive Velocity", getLeftVelocity());
-	// ----- COMMENT THESE OUT WHEN GOING TO FIELD ----- //
-
-	SmartDashboard.putNumber("Right Drive Postion", getRightPosition());
-	SmartDashboard.putNumber("Left Drive Position", getLeftPosition());
-	SmartDashboard.putNumber("Yaw", getCurrentYaw());
+    	SmartDashboard.putNumber("Left Master Voltage", getLeftOutputVoltage());
+    	SmartDashboard.putNumber("Right Master Voltage", getRightOutputVoltage());
+    	
+    	SmartDashboard.putNumber("Left Master Position", getLeftMasterPosition());
+    	SmartDashboard.putNumber("Right Master Position", getRightMasterPosition());
+		
+		SmartDashboard.putNumber("Left Master Position Feet", getLeftPositionFeet());
+		SmartDashboard.putNumber("Right Master Position Feet", getRightPositionFeet());		
+		SmartDashboard.putNumber("Yaw", getRawYaw());
+    	SmartDashboard.putNumber("X pos", m_currentX);
+    	SmartDashboard.putNumber("Y pos", m_currentY);
+    	
     }
-
+    
     public void startLog() {
-	// Check to see if flash drive is mounted.
-	File logFolder1 = new File(m_filePath1);
-	File logFolder2 = new File(m_filePath2);
-	Path filePrefix = Paths.get("");
-	if (logFolder1.exists() && logFolder1.isDirectory()) {
-	    filePrefix = Paths.get(logFolder1.toString(),
-		    Robot.kDate + Robot.ds.getMatchType().toString() + Robot.ds.getMatchNumber() + "Drive");
-	} else if (logFolder2.exists() && logFolder2.isDirectory()) {
-	    filePrefix = Paths.get(logFolder2.toString(),
-		    Robot.kDate + Robot.ds.getMatchType().toString() + Robot.ds.getMatchNumber() + "Drive");
-	} else {
-	    writeException = true;
-	}
+		writeException = false;
+		// Check to see if flash drive is mounted.
+		File logFolder1 = new File(m_filePath1);
+		File logFolder2 = new File(m_filePath2);
+		Path filePrefix = Paths.get("");
+		if (logFolder1.exists() && logFolder1.isDirectory())
+			filePrefix = Paths.get(logFolder1.toString(), m_fileName);
+		else if (logFolder2.exists() && logFolder2.isDirectory())
+			filePrefix = Paths.get(logFolder2.toString(),
+					SmartDashboard.getString("log_file_name", m_fileName));
+		else
+			writeException = true;
 
-	if (!writeException) {
-	    int counter = 0;
-	    while (counter <= 99) {
-		m_file = new File(filePrefix.toString() + String.format("%02d", counter) + ".csv");
-		if (m_file.exists()) {
-		    counter++;
-		} else {
-		    break;
+		if (!writeException) {
+			int counter = 0;
+			while (counter <= 99) {
+				m_file = new File(filePrefix.toString() + String.format("%02d", counter) + ".csv");
+				if (m_file.exists()) {
+					counter++;
+				} else {
+					break;
+				}
+				if (counter == 99) {
+					System.out.println("file creation counter at 99!");
+				}
+			}
+			try {
+				m_writer = new FileWriter(m_file);
+				m_writer.append("Time,RightPosition,LeftPosition,RightVelocity,LeftVelocity,RightDesiredVel,LeftDesiredVel,RightVoltage,LeftVoltage,"
+						+ "RightMasterCurrent,LeftMasterCurrent,RightSlaveCurrent,LeftSlaveCurrent,BusVoltage,Yaw\n");
+				m_writer.flush();
+				m_logStartTime = Timer.getFPGATimestamp();
+			} catch (IOException e) {
+				e.printStackTrace();
+				writeException = true;
+			}
 		}
-		if (counter == 99) {
-		    System.out.println("file creation counter at 99!");
+	}
+
+	public void stopLog() {
+		try {
+			if (null != m_writer)
+				m_writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			writeException = true;
 		}
-	    }
-	    try {
-		m_writer = new FileWriter(m_file);
-		m_writer.append("Time,MatchTime,RightPosition,LeftPosition,RightVelocity,LeftVelocity,Yaw"
-			+ "RightMasterVoltage,RightSlaveVoltage,LeftMasterVoltage,LeftSlaveVoltage,"
-			+ "RightMasterCurrent,RightSlaveCurrent,LeftMasterCurrent,LeftSlaveCurrent\n");
-		m_logStartTime = Timer.getFPGATimestamp();
-	    } catch (IOException e) {
-		e.printStackTrace();
-		writeException = true;
-	    }
 	}
-    }
 
-    public void stopLog() {
-	try {
-	    if (null != m_writer)
-		m_writer.close();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	    writeException = true;
+	public void logToCSV() {
+		if (!writeException) {
+			try {
+				double timestamp = Timer.getFPGATimestamp() - m_logStartTime;
+				m_writer.append(String.valueOf(timestamp) + "," + String.valueOf(getRightMasterPosition()) + ","
+						+ String.valueOf(getLeftMasterPosition()) + "," + String.valueOf(getRightVelocityFeet()) + ","
+						+ String.valueOf(getLeftVelocityFeet()) + "," + String.valueOf(m_rightDesiredVel) + "," + String.valueOf(m_leftDesiredVel)
+						+ "," + String.valueOf(m_rightMaster.getMotorOutputVoltage())
+						+ "," + String.valueOf(m_leftMaster.getMotorOutputVoltage()) + ","
+						+ String.valueOf(m_rightMaster.getOutputCurrent()) + ","
+						+ String.valueOf(m_leftMaster.getOutputCurrent()) + ","
+						+ String.valueOf(m_rightSlave1.getOutputCurrent()) + ","
+						+ String.valueOf(m_leftSlave1.getOutputCurrent()) + "," 
+						+ String.valueOf(getRawYaw()) + "\n");
+				m_writer.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+				writeException = true;
+			}
+		}
 	}
-    }
-
-    public void logToCSV() {
-    System.out.println("test write");
-	if (!writeException) {
-	    try {
-		double timestamp = Timer.getFPGATimestamp() - m_logStartTime;
-		m_writer.append(String.valueOf(timestamp) + "," + String.valueOf(Robot.ds.getMatchTime()) + ","
-			+ String.valueOf(getRightPosition()) + "," + String.valueOf(getLeftPosition()) + ","
-			+ String.valueOf(getRightVelocity()) + "," + String.valueOf(getLeftVelocity()) + ","
-			+ String.valueOf(getCurrentYaw()) + "," + String.valueOf(getRightMasterVoltage()) + ","
-			+ String.valueOf(getRightSlaveVoltage()) + "," + String.valueOf(getLeftMasterVoltage()) + ","
-			+ String.valueOf(getLeftSlaveVoltage()) + "," + String.valueOf(getRightMasterCurrent()) + ","
-			+ String.valueOf(getRightSlaveCurrent()) + "," + String.valueOf(getLeftMasterCurrent()) + ","
-			+ String.valueOf(getLeftSlaveCurrent()) + "\n");
-//		m_writer.flush();
-	    } catch (IOException e) {
-		e.printStackTrace();
-		writeException = true;
-	    }
-	}
-    }
-
 }
+

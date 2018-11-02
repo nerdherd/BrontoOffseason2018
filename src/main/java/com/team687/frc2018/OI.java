@@ -1,40 +1,25 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
-import com.team687.frc2018.commands.arm.SetArmVoltage;
+
 import com.team687.frc2018.commands.arm.SetArmPosition;
-import com.team687.frc2018.commands.auto.CenterToLeftSwitchAuto;
-import com.team687.frc2018.commands.auto.CenterToRightSwitchAuto;
-import com.team687.frc2018.commands.auto.DriveStraightAuto;
-import com.team687.frc2018.commands.auto.LeftToLeftScaleAuto;
-import com.team687.frc2018.commands.auto.LeftToLeftSwitchAuto;
-import com.team687.frc2018.commands.auto.LeftToRightScaleAuto;
-import com.team687.frc2018.commands.auto.RightToLeftScaleAuto;
-import com.team687.frc2018.commands.auto.RightToRightCompatibleScaleAuto;
-import com.team687.frc2018.commands.auto.RightToRightScaleAuto;
-import com.team687.frc2018.commands.auto.RightToRightSwitchAuto;
-import com.team687.frc2018.commands.auto.TestBackwardsBezier;
-import com.team687.frc2018.commands.drive.ResetDriveEncoders;
-import com.team687.frc2018.commands.drive.ResetGyro;
-import com.team687.frc2018.commands.drive.TurnToAngle;
+import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
+import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.intake.ClawClose;
 import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
 import com.team687.frc2018.commands.superstructure.AdjustForwardsScale;
-import com.team687.frc2018.commands.superstructure.FlipCube;
-import com.team687.frc2018.commands.superstructure.BackwardsScaleToStow;
 import com.team687.frc2018.commands.superstructure.DefaultIntake;
 import com.team687.frc2018.commands.superstructure.DefaultStow;
+import com.team687.frc2018.commands.superstructure.FlipCube;
 import com.team687.frc2018.commands.superstructure.ForwardsScaleToStow;
+import com.team687.frc2018.commands.superstructure.IntakeSequenceCurrent;
 import com.team687.frc2018.commands.superstructure.StowToBackwardsScale;
 import com.team687.frc2018.commands.superstructure.StowToForwardsScale;
-import com.team687.frc2018.commands.superstructure.SwitchScorePositionAuto;
 import com.team687.frc2018.commands.superstructure.SwitchScorePositionTeleop;
 import com.team687.frc2018.commands.wrist.ResetWristEncoder;
-import com.team687.frc2018.commands.wrist.SetWristPosition;
 import com.team687.frc2018.commands.wrist.SetWristVoltage;
 import com.team687.frc2018.constants.SuperstructureConstants;
-import com.team687.frc2018.commands.superstructure.IntakeSequenceCurrent;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -48,7 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI {
 
     public Joystick driveJoyLeft = new Joystick(0);
-    public Joystick driveJoyRight = new Joystick(1);
+ 	public Joystick driveJoyRight = new Joystick(1);
     public Joystick driveJoyArtic = new Joystick(2);
 
     // public Joystick gamepadJoy = new Joystick(0);
@@ -113,17 +98,6 @@ public class OI {
 	SmartDashboard.putData("Drive Reset Encoders", new ResetDriveEncoders());
     SmartDashboard.putData("Drive Reset Gyro", new ResetGyro());
     
-    SmartDashboard.putData("3 V arm open loop", new SetArmVoltage(3));
-    SmartDashboard.putData("6 V arm open loop", new SetArmVoltage(6));
-    SmartDashboard.putData("9 V arm open loop", new SetArmVoltage(9));
-    SmartDashboard.putData("12 V arm open loop", new SetArmVoltage(12));
-
-    SmartDashboard.putData("-3 V arm open loop", new SetArmVoltage(-3));
-    SmartDashboard.putData("-6 V arm open loop", new SetArmVoltage(-6));
-    SmartDashboard.putData("-9 V arm open loop", new SetArmVoltage(-9));
-    SmartDashboard.putData("-12 V arm open loop", new SetArmVoltage(-12));
-
-    SmartDashboard.putData("0 V arm open loop", new SetArmVoltage(0));
 
     // SmartDashboard.putData("3 V wrist open loop", new SetWristVoltage(3));
     // SmartDashboard.putData("6 V wrist open loop", new SetWristVoltage(6));

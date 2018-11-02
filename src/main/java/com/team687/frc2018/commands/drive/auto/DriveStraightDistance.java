@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 import com.team687.frc2018.constants.DriveConstants;
@@ -25,7 +25,7 @@ public class DriveStraightDistance extends Command {
 	m_distance = distance;
 	m_heading = heading;
 	m_timeout = timeout;
-	m_maxStraightPower = DriveConstants.kDistMaxPower;
+	m_maxStraightPower = 1;
 
 	requires(Robot.drive);
     }
@@ -49,7 +49,7 @@ public class DriveStraightDistance extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Drive Command", "DriveDistancePID");
-	Robot.drive.stopDrive();
+	Robot.drive.setPowerZero();
 	Robot.drive.resetEncoders();
 
 	m_startTime = Timer.getFPGATimestamp();
@@ -57,8 +57,8 @@ public class DriveStraightDistance extends Command {
 
     @Override
     protected void execute() {
-	m_rightError = m_distance - Robot.drive.getRightPosition();
-	m_leftError = m_distance - Robot.drive.getLeftPosition();
+	m_rightError = m_distance - Robot.drive.getRightMasterPosition();
+	m_leftError = m_distance - Robot.drive.getLeftMasterPosition();
 
 	double straightRightPower = DriveConstants.kDistP * m_rightError;
 	double straightLeftPower = DriveConstants.kDistP * m_leftError;
@@ -67,7 +67,7 @@ public class DriveStraightDistance extends Command {
 	straightLeftPower = NerdyMath.threshold(straightLeftPower, DriveConstants.kDistMinPower, m_maxStraightPower)
 		* DriveConstants.kLeftAdjustment;
 
-	double yaw = Robot.drive.getCurrentYaw();
+	double yaw = Robot.drive.getRawYaw();
 	if (m_distance < 0) {
 	    yaw += 180;
 	}
@@ -75,20 +75,20 @@ public class DriveStraightDistance extends Command {
 	double rotError = -m_heading - robotAngle;
 	rotError = (rotError > 180) ? rotError - 360 : rotError;
 	rotError = (rotError < -180) ? rotError + 360 : rotError;
-	double rotPower = DriveConstants.kDistRotP * rotError;
+	double rotPower = DriveConstants.kRotP * rotError;
 
 	Robot.drive.setPower(straightLeftPower - rotPower, straightRightPower + rotPower);
     }
 
     @Override
     protected boolean isFinished() {
-	boolean reachedGoal = Math.abs(Robot.drive.getDrivetrainPosition()) > Math.abs(m_distance);
+	boolean reachedGoal = Math.abs(Robot.drive.getAverageEncoderPosition()) > Math.abs(m_distance);
 	return reachedGoal || Timer.getFPGATimestamp() - m_startTime > m_timeout;
     }
 
     @Override
     protected void end() {
-	Robot.drive.stopDrive();
+	Robot.drive.setPowerZero();
     }
 
     @Override

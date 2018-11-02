@@ -6,46 +6,39 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Tank drive with sensitivity adjustments
+ *
  */
-
 public class TankDrive extends Command {
-
+	
+	private double m_leftPower, m_rightPower;
     public TankDrive() {
-	// subsystem dependencies
-	requires(Robot.drive);
+        requires(Robot.drive);
     }
 
-    @Override
+    // Called just before this Command runs the first time
     protected void initialize() {
-	SmartDashboard.putString("Current Drive Command", "TankDrive");
-	Robot.drive.stopDrive();
+    	SmartDashboard.putString("Current Command", "Tank Drive");
     }
 
-    @Override
+
+    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-	// double leftPow = Robot.drive.addLeftSensitivity(Robot.oi.getDriveJoyLeftY());
-	// double rightPow =
-	// Robot.drive.addRightSensitivity(Robot.oi.getDriveJoyRightY());
-
-	double leftPow = Robot.oi.getDriveJoyLeftY();
-	double rightPow = Robot.oi.getDriveJoyRightY();
-	Robot.drive.setPower(leftPow, rightPow);
+    	
+    	m_leftPower = Robot.oi.getDriveJoyLeftY();
+    	m_rightPower = Robot.oi.getDriveJoyRightY();
+    	Robot.drive.setPower(-m_leftPower, m_rightPower);
     }
 
-    @Override
+    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-	return false;
+        return false;
     }
 
-    @Override
+    // Called once after isFinished returns true
     protected void end() {
-	Robot.drive.stopDrive();
     }
 
-    @Override
+    // Called when another command which requires one or more of the same
     protected void interrupted() {
-	end();
     }
-
 }

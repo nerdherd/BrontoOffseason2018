@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 
@@ -28,7 +28,7 @@ public class ResetDriveEncoders extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Robot.drive.getDrivetrainPosition() == 0;
+	return Robot.drive.getAverageEncoderPosition() == 0;
     }
 
     @Override

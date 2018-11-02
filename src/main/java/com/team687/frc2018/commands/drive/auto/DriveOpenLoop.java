@@ -5,42 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team687.frc2018.commands.superstructure;
-
-import com.team687.frc2018.Robot;
-import com.team687.frc2018.constants.SuperstructureConstants;
+package com.team687.frc2018.commands.drive.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import com.team687.frc2018.Robot;
 
-public class FlipCube extends Command {
+public class DriveOpenLoop extends Command {
 
-    private boolean m_hasTurned = false;
-
-  public FlipCube() {
-	requires(Robot.arm);
-	requires(Robot.wrist);
-    requires(Robot.intake);
+  public DriveOpenLoop() {
+    requires(Robot.drive);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_hasTurned = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      if (Math.abs(Robot.drive.getLeftOutputVoltage() - Robot.drive.getRightOutputVoltage()) > 5) {
-          m_hasTurned = true;
-      }
-    if (m_hasTurned) { 
-        Robot.wrist.setPosition(SuperstructureConstants.kWristIntakePos);
-        Robot.intake.setRollerPower(1);
-    } 
-    else {  
-        Robot.wrist.setPosition(SuperstructureConstants.kWristFlipCubePos);
-    }
+    Robot.drive.setPower(0.9, 0.9);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -58,6 +42,5 @@ public class FlipCube extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

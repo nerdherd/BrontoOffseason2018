@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 

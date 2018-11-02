@@ -1,13 +1,5 @@
 package com.team687.frc2018;
 
-import com.team687.frc2018.commands.auto.CenterToLeftSwitchAuto;
-import com.team687.frc2018.commands.auto.CenterToRightSwitchAuto;
-import com.team687.frc2018.commands.auto.DriveStraightWithoutCube;
-import com.team687.frc2018.commands.auto.LeftToLeftScaleAuto;
-import com.team687.frc2018.commands.auto.LeftToRightScaleAuto;
-import com.team687.frc2018.commands.auto.RightToLeftScaleAuto;
-import com.team687.frc2018.commands.auto.RightToRightScaleAuto;
-import com.team687.frc2018.constants.DriveConstants;
 import com.team687.frc2018.constants.SuperstructureConstants;
 import com.team687.frc2018.subsystems.Arm;
 import com.team687.frc2018.subsystems.Drive;
@@ -63,9 +55,8 @@ public class Robot extends TimedRobot {
 	intake.setRollerPower(0);
 
 	drive = new Drive();
-	drive.stopDrive();
 	drive.resetEncoders();
-	drive.resetGyro();
+	drive.resetYaw();
 
 	oi = new OI();
 	ds = DriverStation.getInstance();
@@ -87,15 +78,6 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
-	SmartDashboard.putBoolean("HEALTHY DRIVE CURRENT",
-		!(drive.getLeftMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getLeftSlaveCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightSlaveCurrent() > DriveConstants.kDriveSafeCurrent));
-	SmartDashboard.putBoolean("HEALTHY SUPERSTRUCTURE CURRENT",
-		!(arm.getCurrent() > SuperstructureConstants.kArmSafeCurrent
-			|| wrist.getCurrent() > SuperstructureConstants.kWristSafeCurrent));
-
 	drive.stopLog();
 	arm.stopLog();
 	wrist.stopLog();
@@ -115,21 +97,16 @@ public class Robot extends TimedRobot {
 	    drive.resetEncoders();
 	}
 	if (Robot.oi.driveJoyLeft.getRawButton(4) && Robot.oi.driveJoyRight.getRawButton(4)) {
-	    drive.resetGyro();
+	    drive.resetYaw();
 	}
 
 	drive.resetEncoders();
-	drive.resetGyro();
+	drive.resetYaw();
 
 	drive.reportToSmartDashboard();
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
-	SmartDashboard.putBoolean("HEALTHY DRIVE CURRENT",
-		!(drive.getLeftMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getLeftSlaveCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightSlaveCurrent() > DriveConstants.kDriveSafeCurrent));
 	SmartDashboard.putBoolean("HEALTHY SUPERSTRUCTURE CURRENT",
 		!(arm.getCurrent() > SuperstructureConstants.kArmSafeCurrent
 			|| wrist.getCurrent() > SuperstructureConstants.kWristSafeCurrent));
@@ -162,32 +139,6 @@ public class Robot extends TimedRobot {
 	    SmartDashboard.putString("Scale Position", "Right");
 	}
 
-	if (startingPosition == "center" && switchOnLeft) {
-	    autonomousCommand = new CenterToLeftSwitchAuto();
-	    SmartDashboard.putString("Selected Auto", "Center To Left Switch");
-	} else if (startingPosition == "center" && !switchOnLeft) {
-	    autonomousCommand = new CenterToRightSwitchAuto();
-	    SmartDashboard.putString("Selected Auto", "Center To Right Switch");
-	} else if (startingPosition == "left" && scaleOnLeft) {
-	    autonomousCommand = new LeftToLeftScaleAuto();
-	    SmartDashboard.putString("Selected Auto", "Left To Left Scale");
-	} else if (startingPosition == "left" && !scaleOnLeft) {
-	    autonomousCommand = new LeftToRightScaleAuto();
-	    SmartDashboard.putString("Selected Auto", "Left To Right Scale");
-	} else if (startingPosition == "right" && scaleOnLeft) {
-	    autonomousCommand = new RightToLeftScaleAuto();
-	    SmartDashboard.putString("Selected Auto", "Right To Left Scale");
-	} else if (startingPosition == "right" && !scaleOnLeft) {
-	    autonomousCommand = new RightToRightScaleAuto();
-	    SmartDashboard.putString("Selected Auto", "Right To Right Scale");
-	} else {
-	    autonomousCommand = new DriveStraightWithoutCube();
-	    SmartDashboard.putString("Selected Auto", "Drive Straight Without Cube");
-	}
-
-	if (autonomousCommand != null) {
-	    autonomousCommand.start();
-	}
 
 	// drive.startLog();
 	// arm.startLog();
@@ -202,11 +153,6 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
-	SmartDashboard.putBoolean("HEALTHY DRIVE CURRENT",
-		!(drive.getLeftMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getLeftSlaveCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightSlaveCurrent() > DriveConstants.kDriveSafeCurrent));
 	SmartDashboard.putBoolean("HEALTHY SUPERSTRUCTURE CURRENT",
 		!(arm.getCurrent() > SuperstructureConstants.kArmSafeCurrent
 			|| wrist.getCurrent() > SuperstructureConstants.kWristSafeCurrent));
@@ -222,11 +168,6 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
-	SmartDashboard.putBoolean("HEALTHY DRIVE CURRENT",
-		!(drive.getLeftMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getLeftSlaveCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightSlaveCurrent() > DriveConstants.kDriveSafeCurrent));
 	SmartDashboard.putBoolean("HEALTHY SUPERSTRUCTURE CURRENT",
 		!(arm.getCurrent() > SuperstructureConstants.kArmSafeCurrent
 			|| wrist.getCurrent() > SuperstructureConstants.kWristSafeCurrent));
@@ -244,11 +185,6 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
-	SmartDashboard.putBoolean("HEALTHY DRIVE CURRENT",
-		!(drive.getLeftMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightMasterCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getLeftSlaveCurrent() > DriveConstants.kDriveSafeCurrent
-			|| drive.getRightSlaveCurrent() > DriveConstants.kDriveSafeCurrent));
 	SmartDashboard.putBoolean("HEALTHY SUPERSTRUCTURE CURRENT",
 		!(arm.getCurrent() > SuperstructureConstants.kArmSafeCurrent
 			|| wrist.getCurrent() > SuperstructureConstants.kWristSafeCurrent));

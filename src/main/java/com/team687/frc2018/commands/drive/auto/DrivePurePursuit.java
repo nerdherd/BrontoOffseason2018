@@ -5,48 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team687.frc2018.commands.superstructure;
+package com.team687.frc2018.commands.drive.auto;
 
-import com.team687.frc2018.Robot;
-import com.team687.frc2018.constants.SuperstructureConstants;
+import com.team687.frc2018.constants.DriveConstants;
+import com.team687.frc2018.utilities.PurePursuitController;
 
 import edu.wpi.first.wpilibj.command.Command;
+import jaci.pathfinder.Trajectory;
+import com.team687.frc2018.Robot;
 
-public class FlipCube extends Command {
 
-    private boolean m_hasTurned = false;
+public class DrivePurePursuit extends Command {
 
-  public FlipCube() {
-	requires(Robot.arm);
-	requires(Robot.wrist);
-    requires(Robot.intake);
+  private PurePursuitController m_controller;
+  private double m_leftVelocity, m_rightVelocity;
+
+  public DrivePurePursuit(Trajectory traj, double lookahead, boolean goingForward) {
+    m_controller = new PurePursuitController(traj, lookahead, goingForward, DriveConstants.kDrivetrainWidth);
+    requires(Robot.drive);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_hasTurned = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      if (Math.abs(Robot.drive.getLeftOutputVoltage() - Robot.drive.getRightOutputVoltage()) > 5) {
-          m_hasTurned = true;
-      }
-    if (m_hasTurned) { 
-        Robot.wrist.setPosition(SuperstructureConstants.kWristIntakePos);
-        Robot.intake.setRollerPower(1);
-    } 
-    else {  
-        Robot.wrist.setPosition(SuperstructureConstants.kWristFlipCubePos);
-    }
+    m_controller.calculate(Robot.drive.getXpos(), Robot.drive.getYpos(), Robot.drive.getRawYaw());
+    m_leftVelocity = m_controller.getLeftVelocity();
+    m_rightVelocity = m_controller.getRightVelocity();
+    Robot.drive.setVelocityFPS(m_leftVelocity, m_rightVelocity);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return m_controller.isFinished();
   }
 
   // Called once after isFinished returns true
@@ -58,6 +54,5 @@ public class FlipCube extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

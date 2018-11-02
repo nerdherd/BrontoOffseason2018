@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 import com.team687.frc2018.constants.DriveConstants;
@@ -50,7 +50,7 @@ public class ArcTurn extends Command {
 
     @Override
     protected void execute() {
-	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
+	double robotAngle = (360 - Robot.drive.getRawYaw()) % 360;
 	m_error = -m_desiredAngle - robotAngle;
 	m_error = (m_error > 180) ? m_error - 360 : m_error;
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
@@ -77,7 +77,7 @@ public class ArcTurn extends Command {
 
     @Override
     protected void end() {
-	Robot.drive.stopDrive();
+	Robot.drive.setPowerZero();
     }
 
     @Override

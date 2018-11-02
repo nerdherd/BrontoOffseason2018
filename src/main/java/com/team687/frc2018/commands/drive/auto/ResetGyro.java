@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 
@@ -18,7 +18,7 @@ public class ResetGyro extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Drive Command", "ResetGyro");
-	Robot.drive.resetGyro();
+	Robot.drive.resetYaw();
     }
 
     @Override

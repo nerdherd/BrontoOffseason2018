@@ -69,7 +69,7 @@ public class BezierCurve {
     public void calculatePoints() {
 	m_xPoints.clear();
 	m_yPoints.clear();
-	for (double i = 0; i <= 1; i += (1 / DriveConstants.kBezierStep)) {
+	for (double i = 0; i <= 1; i += (1 / 100)) {
 	    m_xPoints.add(calculateX(i));
 	    m_yPoints.add(calculateY(i));
 	}

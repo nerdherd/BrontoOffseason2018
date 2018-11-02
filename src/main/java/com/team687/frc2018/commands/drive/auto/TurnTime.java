@@ -1,4 +1,4 @@
-package com.team687.frc2018.commands.drive;
+package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.Robot;
 import com.team687.frc2018.constants.DriveConstants;
@@ -46,7 +46,7 @@ public class TurnTime extends Command {
 
     @Override
     protected void end() {
-	Robot.drive.stopDrive();
+	Robot.drive.setPowerZero();
     }
 
     @Override

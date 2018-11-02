@@ -5,53 +5,46 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team687.frc2018.commands.superstructure;
+package com.team687.frc2018.commands.drive.characterization;
 
-import com.team687.frc2018.Robot;
-import com.team687.frc2018.constants.SuperstructureConstants;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import com.team687.frc2018.Robot;
 
-public class FlipCube extends Command {
+public class DriveCharacterizationTest extends Command {
 
-    private boolean m_hasTurned = false;
-
-  public FlipCube() {
-	requires(Robot.arm);
-	requires(Robot.wrist);
-    requires(Robot.intake);
+  private double m_voltage, m_startTime, m_time;
+  private double m_rampRate;
+  
+  public DriveCharacterizationTest(double rampRate) {
+    m_rampRate = rampRate;
+    requires(Robot.drive);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    m_hasTurned = false;
+      m_startTime = Timer.getFPGATimestamp();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      if (Math.abs(Robot.drive.getLeftOutputVoltage() - Robot.drive.getRightOutputVoltage()) > 5) {
-          m_hasTurned = true;
-      }
-    if (m_hasTurned) { 
-        Robot.wrist.setPosition(SuperstructureConstants.kWristIntakePos);
-        Robot.intake.setRollerPower(1);
-    } 
-    else {  
-        Robot.wrist.setPosition(SuperstructureConstants.kWristFlipCubePos);
-    }
+    m_time = Timer.getFPGATimestamp() - m_startTime;
+    m_voltage = (m_rampRate * m_time)/12;
+    Robot.drive.setPower(m_voltage, m_voltage);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return m_time > 12 / m_rampRate;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drive.setPowerZero();
   }
 
   // Called when another command which requires one or more of the same
