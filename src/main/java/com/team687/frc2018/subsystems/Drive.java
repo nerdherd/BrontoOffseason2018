@@ -14,7 +14,7 @@ import com.team687.frc2018.commands.drive.characterization.VelocityPIDF;
 import com.team687.frc2018.commands.drive.teleop.ArcadeDrive;
 import com.team687.frc2018.constants.DriveConstants;
 import com.team687.frc2018.utilities.NerdyTalon;
-
+import com.team687.frc2018.Robot;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
@@ -35,7 +35,7 @@ public class Drive extends Subsystem {
     
     private String m_filePath1 = "/media/sda1/logs/";
 	private String m_filePath2 = "/home/lvuser/logs/";
-	private String m_fileName = "2018_09_15_pathfinder_test";
+	private String m_fileName = Robot.kDate + "pathfinder_test_drive";
     private File m_file;
     public FileWriter m_writer;
     private boolean writeException = false;
@@ -62,14 +62,14 @@ public class Drive extends Subsystem {
 		
 		m_leftSlave1.follow(m_leftMaster);
 				
-		m_leftMaster.setInverted(true);
-		m_leftSlave1.setInverted(true);
+		m_leftMaster.setInverted(false);
+		m_leftSlave1.setInverted(false);
 		
-		m_rightMaster.setInverted(false);
-		m_rightSlave1.setInverted(false);
+		m_rightMaster.setInverted(true);
+		m_rightSlave1.setInverted(true);
 
-		m_leftMaster.setSensorPhase(false);
-		m_rightMaster.setSensorPhase(false);
+		m_leftMaster.setSensorPhase(true);
+		m_rightMaster.setSensorPhase(true);
 		
 		// m_rightMaster.configPIDF(DriveConstants.kRightP, DriveConstants.kRightI, DriveConstants.kRightD, DriveConstants.kRightF, 0);
 		// m_leftMaster.configPIDF(DriveConstants.kLeftP, DriveConstants.kLeftI, DriveConstants.kLeftD, DriveConstants.kLeftF, 0);
@@ -312,8 +312,8 @@ public class Drive extends Subsystem {
 			try {
 				double timestamp = Timer.getFPGATimestamp() - m_logStartTime;
 				m_writer.append(String.valueOf(timestamp) + "," + String.valueOf(getRightMasterPosition()) + ","
-						+ String.valueOf(getLeftMasterPosition()) + "," + String.valueOf(getRightVelocityFeet()) + ","
-						+ String.valueOf(getLeftVelocityFeet()) + "," + String.valueOf(m_rightDesiredVel) + "," + String.valueOf(m_leftDesiredVel)
+						+ String.valueOf(getLeftMasterPosition()) + "," + String.valueOf(m_rightMaster.getSelectedSensorVelocity()) + ","
+						+ String.valueOf(m_leftMaster.getSelectedSensorVelocity(0)) + "," + String.valueOf(m_rightDesiredVel) + "," + String.valueOf(m_leftDesiredVel)
 						+ "," + String.valueOf(m_rightMaster.getMotorOutputVoltage())
 						+ "," + String.valueOf(m_leftMaster.getMotorOutputVoltage()) + ","
 						+ String.valueOf(m_rightMaster.getOutputCurrent()) + ","

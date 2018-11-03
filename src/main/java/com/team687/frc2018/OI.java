@@ -1,10 +1,9 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
-
-import com.team687.frc2018.commands.arm.SetArmPosition;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
+import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.intake.ClawClose;
 import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
@@ -14,11 +13,9 @@ import com.team687.frc2018.commands.superstructure.DefaultStow;
 import com.team687.frc2018.commands.superstructure.FlipCube;
 import com.team687.frc2018.commands.superstructure.ForwardsScaleToStow;
 import com.team687.frc2018.commands.superstructure.IntakeSequenceCurrent;
-import com.team687.frc2018.commands.superstructure.StowToBackwardsScale;
 import com.team687.frc2018.commands.superstructure.StowToForwardsScale;
 import com.team687.frc2018.commands.superstructure.SwitchScorePositionTeleop;
 import com.team687.frc2018.commands.wrist.ResetWristEncoder;
-import com.team687.frc2018.commands.wrist.SetWristVoltage;
 import com.team687.frc2018.constants.SuperstructureConstants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -90,8 +87,8 @@ public class OI {
     flipCube_12 = new JoystickButton(driveJoyArtic, 12);
     flipCube_12.whenPressed(new FlipCube());
 
-    SmartDashboard.putData("Backwards Scale", new StowToBackwardsScale()
-    );
+    // SmartDashboard.putData("Backwards Scale", new StowToBackwardsScale()
+    // );
 
 	SmartDashboard.putData("Arm Reset Encoder", new ResetArmEncoder());
 	SmartDashboard.putData("Wrist Reset Encoder", new ResetWristEncoder());
@@ -109,7 +106,7 @@ public class OI {
     // SmartDashboard.putData("-9 V wrist open loop", new SetWristVoltage(-9));
     // SmartDashboard.putData("-12 V wrist open loop", new SetWristVoltage(-12));
 
-    SmartDashboard.putData("0 V wrist open loop", new SetWristVoltage(0));
+    // SmartDashboard.putData("0 V wrist open loop", new SetWristVoltage(0));
     
     // SmartDashboard.putData("Wrist Hopefully back", new SetWristPosition(-100));
     // SmartDashboard.putData("Wrist Vertical Up", new SetWristPosition(-2070));
@@ -123,8 +120,8 @@ public class OI {
 	//  SetArmPosition(SuperstructureConstants.kArmVerticalPos));
 	//  SmartDashboard.putData("Arm Position Horizontal",
 	//  new SetArmPosition(SuperstructureConstants.kArmHorizontalPos));
-    SmartDashboard.putData("Arm Position Offset", new
-    SetArmPosition(SuperstructureConstants.kArmOffsetPos));
+    // SmartDashboard.putData("Arm Position Offset", new
+    // SetArmPosition(SuperstructureConstants.kArmOffsetPos));
      
 	// //
 	// // SmartDashboard.putData("Wrist Voltage 0", new SetWristPercentOutput(0));
@@ -139,8 +136,8 @@ public class OI {
 	// SmartDashboard.putData("Set Intake Power -1", new SetIntakeRollerPower(-1));
 	// SmartDashboard.putData("Set Intake Power 0", new SetIntakeRollerPower(0));
 	// SmartDashboard.putData("Outtake", new SetIntakeRollerPower(0.4));
-	SmartDashboard.putData("Open Intake Claw", new ClawOpen());
-	SmartDashboard.putData("Close Intake Claw", new ClawClose());
+	// SmartDashboard.putData("Open Intake Claw", new ClawOpen());
+	// SmartDashboard.putData("Close Intake Claw", new ClawClose());
 
 	//  SmartDashboard.putData("Superstructure Stow to Backwards Scale", new
 	//  StowToBackwardsScale());
@@ -155,7 +152,7 @@ public class OI {
 	//  SmartDashboard.putData("Superstructure Scale Adjust Low", new AdjustForwardsScale(SuperstructureConstants.kArmLowScalePosition));
 	//  SmartDashboard.putData("Superstructure Scale Adjust Lower", new AdjustForwardsScale(SuperstructureConstants.kArmLowerScalePosition));
 	
-	//  SmartDashboard.putData("Superstructure Stow", new DefaultStow());
+	 SmartDashboard.putData("Superstructure Stow", new DefaultStow());
 	//  SmartDashboard.putData("Superstructure Intake", new DefaultIntake());
 	//  SmartDashboard.putData("Superstructure Switch Teleop Pos", new SwitchScorePositionTeleop());
 	// SmartDashboard.putData("Superstructure Intake Position", new
@@ -188,6 +185,8 @@ public class OI {
 
 
 	// SmartDashboard.putData("Drive Straight Auto", new DriveStraightAuto());
+
+	SmartDashboard.putData("DT Char Test", new DriveCharacterizationTest(0.25));
 
     }
 
