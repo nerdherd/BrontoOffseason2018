@@ -250,7 +250,8 @@ public class Drive extends Subsystem {
     	SmartDashboard.putNumber("Right Master Position", getRightMasterPosition());
 		
 		SmartDashboard.putNumber("Left Master Position Feet", getLeftPositionFeet());
-		SmartDashboard.putNumber("Right Master Position Feet", getRightPositionFeet());		
+		SmartDashboard.putNumber("Right Master Position Feet", getRightPositionFeet());	
+			
 		SmartDashboard.putNumber("Yaw", getRawYaw());
     	SmartDashboard.putNumber("X pos", m_currentX);
     	SmartDashboard.putNumber("Y pos", m_currentY);

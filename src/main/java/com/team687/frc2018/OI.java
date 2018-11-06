@@ -1,9 +1,12 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
+import com.team687.frc2018.commands.drive.auto.DriveOpenLoop;
+import com.team687.frc2018.commands.drive.auto.DrivePurePursuit;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
+import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
 import com.team687.frc2018.commands.intake.ClawClose;
 import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
@@ -16,6 +19,7 @@ import com.team687.frc2018.commands.superstructure.IntakeSequenceCurrent;
 import com.team687.frc2018.commands.superstructure.StowToForwardsScale;
 import com.team687.frc2018.commands.superstructure.SwitchScorePositionTeleop;
 import com.team687.frc2018.commands.wrist.ResetWristEncoder;
+import com.team687.frc2018.constants.AutoConstants;
 import com.team687.frc2018.constants.SuperstructureConstants;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -85,108 +89,21 @@ public class OI {
 	closeClaw_5 = new JoystickButton(driveJoyArtic, 6);
     closeClaw_5.whenPressed(new ClawClose());
     flipCube_12 = new JoystickButton(driveJoyArtic, 12);
-    flipCube_12.whenPressed(new FlipCube());
-
-    // SmartDashboard.putData("Backwards Scale", new StowToBackwardsScale()
-    // );
-
+	flipCube_12.whenPressed(new FlipCube());
+	
 	SmartDashboard.putData("Arm Reset Encoder", new ResetArmEncoder());
 	SmartDashboard.putData("Wrist Reset Encoder", new ResetWristEncoder());
 	SmartDashboard.putData("Drive Reset Encoders", new ResetDriveEncoders());
-    SmartDashboard.putData("Drive Reset Gyro", new ResetGyro());
-    
-
-    // SmartDashboard.putData("3 V wrist open loop", new SetWristVoltage(3));
-    // SmartDashboard.putData("6 V wrist open loop", new SetWristVoltage(6));
-    // SmartDashboard.putData("9 V wrist open loop", new SetWristVoltage(9));
-    // SmartDashboard.putData("12 V wrist open loop", new SetWristVoltage(12));
-
-    // SmartDashboard.putData("-3 V wrist open loop", new SetWristVoltage(-3));
-    // SmartDashboard.putData("-6 V wrist open loop", new SetWristVoltage(-6));
-    // SmartDashboard.putData("-9 V wrist open loop", new SetWristVoltage(-9));
-    // SmartDashboard.putData("-12 V wrist open loop", new SetWristVoltage(-12));
-
-    // SmartDashboard.putData("0 V wrist open loop", new SetWristVoltage(0));
-    
-    // SmartDashboard.putData("Wrist Hopefully back", new SetWristPosition(-100));
-    // SmartDashboard.putData("Wrist Vertical Up", new SetWristPosition(-2070));
-    // SmartDashboard.putData("Wrist Horizontal", new SetWristPosition(-4600));
-    // SmartDashboard.putData("Wrsit Vertical Down", new SetWristPosition(-7200));
-
-	// SmartDashboard.putData("Drive Straight Test", new TestDriveSubsystem());
-	//
-	// SmartDashboard.putData("Arm Voltage 0", new SetArmVoltage(0));
-	//  SmartDashboard.putData("Arm Position Vertical", new
-	//  SetArmPosition(SuperstructureConstants.kArmVerticalPos));
-	//  SmartDashboard.putData("Arm Position Horizontal",
-	//  new SetArmPosition(SuperstructureConstants.kArmHorizontalPos));
-    // SmartDashboard.putData("Arm Position Offset", new
-    // SetArmPosition(SuperstructureConstants.kArmOffsetPos));
-     
-	// //
-	// // SmartDashboard.putData("Wrist Voltage 0", new SetWristPercentOutput(0));
-	//  SmartDashboard.putData("Wrist Position Intake", new
-	//  SetWristPosition(Robot.wrist.angleAbsoluteToTicks(0)));
-	//  SmartDashboard.putData("Wrist Position Offset Stow",
-	//  new SetWristPosition(SuperstructureConstants.kWristStowArmOffsetPos));
-	//  SmartDashboard.putData("Wrist Position Stow", new
-	//  SetWristPosition(Robot.wrist.angleAbsoluteToTicks(90)));
-	//
-	// SmartDashboard.putData("Set Intake Power 1", new SetIntakeRollerPower(1));
-	// SmartDashboard.putData("Set Intake Power -1", new SetIntakeRollerPower(-1));
-	// SmartDashboard.putData("Set Intake Power 0", new SetIntakeRollerPower(0));
-	// SmartDashboard.putData("Outtake", new SetIntakeRollerPower(0.4));
-	// SmartDashboard.putData("Open Intake Claw", new ClawOpen());
-	// SmartDashboard.putData("Close Intake Claw", new ClawClose());
-
-	//  SmartDashboard.putData("Superstructure Stow to Backwards Scale", new
-	//  StowToBackwardsScale());
-	//  SmartDashboard.putData("Superstructure Stow to Forwards Scale", new
-	//  StowToForwardsScale());
-	//  SmartDashboard.putData("Superstructure Backwards Scale To Stow", new
-	//  BackwardsScaleToStow());
-	//  SmartDashboard.putData("Superstructure Forwards Scale to Stow", new
-	//  ForwardsScaleToStow());
-	 
-	//  SmartDashboard.putData("Superstructure Scale Adjust Mid", new AdjustForwardsScale(SuperstructureConstants.kArmMiddleScalePosition));
-	//  SmartDashboard.putData("Superstructure Scale Adjust Low", new AdjustForwardsScale(SuperstructureConstants.kArmLowScalePosition));
-	//  SmartDashboard.putData("Superstructure Scale Adjust Lower", new AdjustForwardsScale(SuperstructureConstants.kArmLowerScalePosition));
-	
-	 SmartDashboard.putData("Superstructure Stow", new DefaultStow());
-	//  SmartDashboard.putData("Superstructure Intake", new DefaultIntake());
-	//  SmartDashboard.putData("Superstructure Switch Teleop Pos", new SwitchScorePositionTeleop());
-	// SmartDashboard.putData("Superstructure Intake Position", new
-	// IntakePosition());
-
-	// SmartDashboard.putData("Turn To 0", new TurnToAngle(0, 2, 2));
-	// SmartDashboard.putData("Turn To 90", new TurnToAngle(90, 2, 2));
-	// SmartDashboard.putData("Turn To -90", new TurnToAngle(-90, 2, 2));
-	// SmartDashboard.putData("Turn To 5", new TurnToAngle(5, 2, 2));
-	// SmartDashboard.putData("Turn To -5", new TurnToAngle(-5, 2, 2));
-	// SmartDashboard.putData("Turn To 20", new TurnToAngle(20, 2, 2));
-	// SmartDashboard.putData("Turn To -20", new TurnToAngle(-20, 2, 2));
-
-	// SmartDashboard.putData("Center To Left Switch", new CenterToLeftSwitchAuto());
-	// SmartDashboard.putData("Center To Right Switch", new CenterToRightSwitchAuto());
-	// SmartDashboard.putData("Test Backwards Bezier", new TestBackwardsBezier());
-	
-	// SmartDashboard.putData("Left To Left Scale", new LeftToLeftScaleAuto());
-	// SmartDashboard.putData("Left To Right Scale", new LeftToRightScaleAuto());
-	// SmartDashboard.putData("Left To Left Switch", new LeftToLeftSwitchAuto());
-	// SmartDashboard.putData("Right To Left Scale", new RightToLeftScaleAuto());
-	// SmartDashboard.putData("Right To Right Scale", new RightToRightScaleAuto());
-	// SmartDashboard.putData("Right To Right Compatible Scale", new RightToRightCompatibleScaleAuto());
-	// SmartDashboard.putData("Right To Right Switch", new RightToRightSwitchAuto());
-	// SmartDashboard.putData("Open Claw", new ClawOpen());
-	// SmartDashboard.putData("Close Claw", new ClawClose());
-
-	// SmartDashboard.putData("Superstructure Stow to Forwards Scale", new StowToForwardsScale());
-	// SmartDashboard.putData("Superstructure Forwards Scale to Stow", new ForwardsScaleToStow());	
-
-
-	// SmartDashboard.putData("Drive Straight Auto", new DriveStraightAuto());
+    SmartDashboard.putData("Drive Reset Gyro", new ResetGyro());    
+	SmartDashboard.putData("Superstructure Stow", new DefaultStow());
 
 	SmartDashboard.putData("DT Char Test", new DriveCharacterizationTest(0.25));
+	SmartDashboard.putData("12 V drivetrain open loop", new OpenLoopDrive(1));
+	SmartDashboard.putData("9 V drivetrain open loop", new OpenLoopDrive(0.75));
+	SmartDashboard.putData("6 V drivetrain open loop", new OpenLoopDrive(0.5));
+	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
+	
+	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 1.5, true));
 
     }
 

@@ -156,10 +156,9 @@ public class Arm extends Subsystem {
 //	SmartDashboard.putNumber("Arm Current", getCurrent());
 //	SmartDashboard.putNumber("Arm Desired Position", m_desiredPos);
     	
-SmartDashboard.putNumber("Arm Pos As Angle Degrees to Ticks", Robot.arm.degreesToTicks(Robot.arm.ticksToDegrees(getPosition())));
-SmartDashboard.putNumber("Arm Pos As Angle Ticks to Degrees", Robot.arm.ticksToDegrees(getPosition()));
+	// SmartDashboard.putNumber("Arm Pos As Angle Degrees to Ticks", Robot.arm.degreesToTicks(Robot.arm.ticksToDegrees(getPosition())));
+	// SmartDashboard.putNumber("Arm Pos As Angle Ticks to Degrees", Robot.arm.ticksToDegrees(getPosition()));
 	// ----- COMMENT THESE OUT WHEN GOING TO FIELD ----- //
-
 	SmartDashboard.putNumber("Arm Position", getPosition());
 	SmartDashboard.putNumber("Arm Angle from Encoder", getAngleAbsolute());
     }
