@@ -7,6 +7,7 @@ import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
+import com.team687.frc2018.commands.drive.characterization.VelocityTest;
 import com.team687.frc2018.commands.intake.ClawClose;
 import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
@@ -104,7 +105,8 @@ public class OI {
 	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
 	
 	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 1.5, true));
-
+    SmartDashboard.putData("Velocity Test", new VelocityTest(0, 5));
+    // test velocity at around 1/4 - 1/3 of max velocity
     }
 
     /**

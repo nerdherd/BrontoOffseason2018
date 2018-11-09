@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -120,8 +121,8 @@ public class Drive extends Subsystem {
 	}
 	
 	public void setVelocity(double leftVel, double rightVel) {
-		m_rightMaster.set(ControlMode.Velocity, rightVel);
-		m_leftMaster.set(ControlMode.Velocity, leftVel);
+		m_rightMaster.set(ControlMode.Velocity, rightVel, DemandType.ArbitraryFeedForward, DriveConstants.kRightStatic);
+		m_leftMaster.set(ControlMode.Velocity, leftVel, DemandType.ArbitraryFeedForward, DriveConstants.kLeftStatic);
 		
 	}
 	

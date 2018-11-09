@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".wpilib"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}

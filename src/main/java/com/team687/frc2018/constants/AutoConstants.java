@@ -18,7 +18,7 @@ public class AutoConstants {
     private static Waypoint[] test_points = new Waypoint[] {
         new Waypoint(0, 0, 0),
         new Waypoint(5, 5, 0)  
-    }
+    };
 
     private static Config testConfig = new Config(Trajectory.FitMethod.HERMITE_CUBIC, Config.SAMPLES_HIGH, dt, kCruiseVelocity, kAcceleration, kJerk);
     private static Waypoint[] testPoints = new Waypoint[] {
