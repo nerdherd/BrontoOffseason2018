@@ -38,12 +38,12 @@ public class VelocityPIDF implements Runnable {
         m_leftError = m_leftDesiredVel - Robot.drive.getLeftMasterSpeed();
         m_rightError = m_rightDesiredVel - Robot.drive.getRightMasterSpeed();
 
-        m_leftVoltage = DriveConstants.kLeftStatic * Math.signum(m_leftDesiredVel) + DriveConstants.kLeftV * m_leftDesiredVel 
-        + m_leftError * DriveConstants.kLeftVelocityP + DriveConstants.kLeftVelocityD
-        * (m_leftError - m_leftPrevError)/(m_time - m_prevTime);
-        m_rightVoltage = DriveConstants.kRightStatic * Math.signum(m_rightDesiredVel) + DriveConstants.kRightV * m_rightDesiredVel 
-        + m_rightError * DriveConstants.kRightVelocityP + DriveConstants.kRightVelocityD
-        * (m_rightError - m_rightPrevError)/(m_time - m_prevTime);
+        // m_leftVoltage = DriveConstants.kLeftStatic * Math.signum(m_leftDesiredVel) + DriveConstants.kLeftV * m_leftDesiredVel 
+        // + m_leftError * DriveConstants.kLeftVelocityP + DriveConstants.kLeftVelocityD
+        // * (m_leftError - m_leftPrevError)/(m_time - m_prevTime);
+        // m_rightVoltage = DriveConstants.kRightStatic * Math.signum(m_rightDesiredVel) + DriveConstants.kRightV * m_rightDesiredVel 
+        // + m_rightError * DriveConstants.kRightVelocityP + DriveConstants.kRightVelocityD
+        // * (m_rightError - m_rightPrevError)/(m_time - m_prevTime);
         Robot.drive.setVoltage(m_leftVoltage, m_rightVoltage);
         Robot.drive.addDesiredVelocities(m_leftDesiredVel, m_rightDesiredVel);
         m_prevTime = m_time;

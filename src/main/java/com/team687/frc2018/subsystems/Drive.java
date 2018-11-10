@@ -72,8 +72,8 @@ public class Drive extends Subsystem {
 		m_leftMaster.setSensorPhase(true);
 		m_rightMaster.setSensorPhase(true);
 		
-		// m_rightMaster.configPIDF(DriveConstants.kRightP, DriveConstants.kRightI, DriveConstants.kRightD, DriveConstants.kRightF, 0);
-		// m_leftMaster.configPIDF(DriveConstants.kLeftP, DriveConstants.kLeftI, DriveConstants.kLeftD, DriveConstants.kLeftF, 0);
+		m_rightMaster.configPIDF(DriveConstants.kRightP, DriveConstants.kRightI, DriveConstants.kRightD, DriveConstants.kRightF, 0);
+		m_leftMaster.configPIDF(DriveConstants.kLeftP, DriveConstants.kLeftI, DriveConstants.kLeftD, DriveConstants.kLeftF, 0);
 
 		// m_leftMaster.configMotionMagic(DriveConstants.kLeftAcceleration, DriveConstants.kLeftCruiseVelocity);
 		// m_rightMaster.configMotionMagic(DriveConstants.kRightAcceleration, DriveConstants.kRightCruiseVelocity);
@@ -90,8 +90,6 @@ public class Drive extends Subsystem {
 		m_leftMaster.configDefaultSettings();
 		m_leftSlave1.configDefaultSettings();
 
-		m_rightMaster.configPIDF(DriveConstants.kRightVelocityP, 0, DriveConstants.kRightVelocityD, DriveConstants.kRightV, 0);
-		m_leftMaster.configPIDF(DriveConstants.kLeftVelocityP, 0, DriveConstants.kLeftVelocityD, DriveConstants.kLeftV, 0);
 	}
 	
 	public void setPower(double leftPower, double rightPower) {
@@ -210,36 +208,36 @@ public class Drive extends Subsystem {
     	return m_currentY;
     }
 	
-	public double ticksToFeet(double ticks) {
-		return ticks / DriveConstants.kTicksPerFoot;
-	}
+	public double ticksToFeet(double ticks, double ticksPerFoot) {
+		return ticks / ticksPerFoot;
 	
-	public double feetToTicks(double feet) {
-		return feet * DriveConstants.kTicksPerFoot;
+	
+	public double feetToTicks(double feet, double ticksPerFoot) {
+		return feet * ticksPerFoot;
 	}
 
 	public double getLeftVelocityFeet() {
-		return ticksToFeet(m_leftMaster.getSelectedSensorVelocity(0) / 0.1);
+		return ticksToFeet(m_leftMaster.getSelectedSensorVelocity(0) / 0.1, DriveConstants.kTicksPerFootLeft);
 	}
 
 	public double getRightVelocityFeet() {
-		return ticksToFeet(m_rightMaster.getSelectedSensorVelocity(0) / 0.1);
+		return ticksToFeet(m_rightMaster.getSelectedSensorVelocity(0) / 0.1, DriveConstants.kTicksPerFootRight);
 	}
 
 	public double getLeftPositionFeet() {
-		return ticksToFeet(m_leftMaster.getSelectedSensorPosition(0));
+		return m_leftMaster.getSelectedSensorPosition(0) / DriveConstants.kTicksPerFootLeft;
 	}
 
 	public double getRightPositionFeet() {
-		return m_rightMaster.getSelectedSensorPosition(0) / DriveConstants.kTicksPerFoot;
+		return m_rightMaster.getSelectedSensorPosition(0) / DriveConstants.kTicksPerFootRight;
 	}
 
-	public double fpsToTalonVelocityUnits(double fps) {
-		return feetToTicks(fps)/10;
+	public double fpsToTalonVelocityUnits(double fps, double ticksPerFoot) {
+		return feetToTicks(fps, ticksPerFoot)/10;
 	}
 
 	public void setVelocityFPS(double leftVel, double rightVel) {
-		setVelocity(fpsToTalonVelocityUnits(leftVel), fpsToTalonVelocityUnits(rightVel));
+		setVelocity(fpsToTalonVelocityUnits(leftVel, DriveConstants.kTicksPerFootLeft), fpsToTalonVelocityUnits(rightVel, DriveConstants.kTicksPerFootRight));
 	}
 
 
@@ -253,6 +251,8 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Left Master Position Feet", getLeftPositionFeet());
 		SmartDashboard.putNumber("Right Master Position Feet", getRightPositionFeet());	
 			
+		SmartDashboard.putNumber("left Velocity", getLeftMasterSpeed());
+		SmartDashboard.putNumber("Right Velocity", getRightMasterSpeed());
 		SmartDashboard.putNumber("Yaw", getRawYaw());
     	SmartDashboard.putNumber("X pos", m_currentX);
     	SmartDashboard.putNumber("Y pos", m_currentY);

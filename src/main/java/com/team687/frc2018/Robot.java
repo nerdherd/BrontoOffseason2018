@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class Robot extends TimedRobot {
 
-    public static final String kDate = "2018_11_02_";
+    public static final String kDate = "2018_11_09_";
 
     public static Drive drive;
     public static Arm arm;
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
 	// Scheduler.getInstance().removeAll();
-	drive.resetEncoders();
+	// drive.resetEncoders();
 	drive.resetYaw();
 
 	drive.reportToSmartDashboard();
