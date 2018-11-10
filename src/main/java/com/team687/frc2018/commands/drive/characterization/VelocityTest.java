@@ -37,6 +37,7 @@ public class VelocityTest extends Command {
   @Override
   protected void execute() {
     m_time = Timer.getFPGATimestamp() - m_startTime;
+    Robot.drive.addDesiredVelocities(m_desiredVel, m_desiredVel);
     Robot.drive.setVelocity(m_desiredVel, m_desiredVel);
     
   }
@@ -45,6 +46,7 @@ public class VelocityTest extends Command {
   @Override
   protected boolean isFinished() {
       return m_time > m_desiredTime;
+      // return false;
   }
 
   // Called once after isFinished returns true
