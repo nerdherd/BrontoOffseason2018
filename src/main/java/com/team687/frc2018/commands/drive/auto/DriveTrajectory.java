@@ -9,8 +9,8 @@ package com.team687.frc2018.commands.drive.auto;
 
 import java.io.File;
 
-import com.team687.frc2018.constants.DriveConstants;
 import com.team687.frc2018.Robot;
+import com.team687.frc2018.constants.DriveConstants;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,8 +52,8 @@ public class DriveTrajectory extends Command {
   protected void initialize() {
     m_leftFollower = new DistanceFollower(m_leftTrajectory);
     m_rightFollower = new DistanceFollower(m_rightTrajectory);
-    // m_leftFollower.configurePIDVA(DriveConstants.kLeftVelocityP, 0, DriveConstants.kLeftVelocityD, DriveConstants.kLeftV, 0);
-    // m_rightFollower.configurePIDVA(DriveConstants.kRightVelocityP, 0, DriveConstants.kRightVelocityD, DriveConstants.kRightV, 0);
+    m_leftFollower.configurePIDVA(DriveConstants.kLeftVelocityP, 0, DriveConstants.kLeftVelocityD, DriveConstants.kLeftV, 0);
+    m_rightFollower.configurePIDVA(DriveConstants.kRightVelocityP, 0, DriveConstants.kRightVelocityD, DriveConstants.kRightV, 0);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -64,7 +64,7 @@ public class DriveTrajectory extends Command {
     m_angularError = Pathfinder.boundHalfDegrees(Pathfinder.r2d(-m_leftFollower.getHeading()) - Robot.drive.getRawYaw());
     m_turn = DriveConstants.kRotP * m_angularError;
     Robot.drive.addDesiredVelocities(m_leftFollower.getSegment().velocity, m_rightFollower.getSegment().velocity);
-    // Robot.drive.setPower(m_leftOutput + m_turn, m_rightOutput - m_turn);
+    Robot.drive.setPower(m_leftOutput + m_turn, m_rightOutput - m_turn);
     SmartDashboard.putNumber("Velocity", m_leftFollower.getSegment().velocity);
   }
 

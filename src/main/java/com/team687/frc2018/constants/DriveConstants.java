@@ -1,6 +1,7 @@
 package com.team687.frc2018.constants;
 
 public class DriveConstants {
+
 //	TalonSRX Constants
 	public static final double kLeftP = 0.0971;
 	public static final double kLeftI = 0;
@@ -13,6 +14,10 @@ public class DriveConstants {
 	public static final double kRightD = 0.3;
 	public static final double kRightF = 0.254386;
 	
+	public static final double kLeftStatic = 1.242/12;
+
+	public static final double kRightStatic = 1.441/12;
+
 	public static final int kLeftAcceleration = 0;
 	public static final int kLeftCruiseVelocity = 0;
 	
@@ -32,6 +37,8 @@ public class DriveConstants {
 //	Physical Robot Constants
 	public static final double kWheelDiameter = 6;
 	public static final double kDrivetrainWidth = 2.09766;
+	public static final double kTicksPerFootLeft = 2607.594588;
+	public static final double kTicksPerFootRight = 2607.594588;
 	
 //	Other Constants 
 	public static final double kJoystickDeadband = 0.1;
@@ -47,20 +54,22 @@ public class DriveConstants {
 	public static final double kLeftAdjustment = 1;
 	public static final double kRightAdjustment = 1;
 
-	public static final double kLeftStatic = 1.242/12;
-
-	public static final double kRightStatic = 1.441/12;
-
 	public static final double kRotP = 0;
-	
-	public static final double kTicksPerFootLeft = 2214.5;
-	public static final double kTicksPerFootRight = 2214.5;
-
 
 	public static final double kVelocityPIDPeriod = 0.01;
 
 	public static final double kDistP = 0.0001;
 	public static final double kDistMaxPower = 1;
 	public static final double kDistMinPower = 0;
+
+	// Pathfinder Constants
+	public static final double kLeftVelocityP = 0;
+	public static final double kLeftVelocityD = 0;
+	public static final double kLeftV = 0;
+
+	public static final double kRightVelocityP = 0;
+	public static final double kRightVelocityD = 0;
+	public static final double kRightV = 0;
+
 
 }
