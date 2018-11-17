@@ -1,7 +1,6 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
-import com.team687.frc2018.commands.drive.auto.DriveOpenLoop;
 import com.team687.frc2018.commands.drive.auto.DrivePurePursuit;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
@@ -104,7 +103,7 @@ public class OI {
 	SmartDashboard.putData("6 V drivetrain open loop", new OpenLoopDrive(0.5));
 	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
 	
-	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 1.5, true));
+	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 4, true));
     SmartDashboard.putData("Velocity Test", new VelocityTest(1000, 5));
     // test velocity at around 1/4 - 1/3 of max velocity
     }

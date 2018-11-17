@@ -16,9 +16,9 @@ public class PurePursuitController {
             m_a, m_b, m_c, m_goalX1, m_goalX2, m_goalY1, m_goalY2,
             m_startTime, m_time, m_robotX, m_robotY, m_slope,
             m_yInt, m_error1, m_error2, m_angle, m_targetAngle1,
-            m_targetAngle2, m_goalX, m_goalY, m_xOffset, m_velocity,
+            m_targetAngle2, m_xOffset, m_velocity,
             m_innerVelocity, m_error, m_driveRadius, m_width, m_leftDesiredVel, m_rightDesiredVel;
-
+    public double m_goalX, m_goalY;
 
     public PurePursuitController(Trajectory traj, double lookahead, boolean goingForwards, double width) {
         m_trajectory = traj;
