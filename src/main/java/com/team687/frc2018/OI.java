@@ -104,7 +104,7 @@ public class OI {
 	SmartDashboard.putData("6 V drivetrain open loop", new OpenLoopDrive(0.5));
 	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
 	
-	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 1.5, true));
+	SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 10, true));
     SmartDashboard.putData("Velocity Test", new VelocityTest(1000, 5));
     // test velocity at around 1/4 - 1/3 of max velocity
     }

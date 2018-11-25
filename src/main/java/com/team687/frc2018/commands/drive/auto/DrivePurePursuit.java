@@ -9,7 +9,7 @@ package com.team687.frc2018.commands.drive.auto;
 
 import com.team687.frc2018.constants.DriveConstants;
 import com.team687.frc2018.utilities.PurePursuitController;
-
+import com.team687.frc2018.utilities.AdaptivePurePursuitController;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Trajectory;
 import com.team687.frc2018.Robot;
@@ -17,11 +17,13 @@ import com.team687.frc2018.Robot;
 
 public class DrivePurePursuit extends Command {
 
-  private PurePursuitController m_controller;
+  // private PurePursuitController m_controller;
+  private AdaptivePurePursuitController m_controller;
   private double m_leftVelocity, m_rightVelocity;
 
-  public DrivePurePursuit(Trajectory traj, double lookahead, boolean goingForward) {
-    m_controller = new PurePursuitController(traj, lookahead, goingForward, DriveConstants.kDrivetrainWidth);
+  public DrivePurePursuit(Trajectory traj, int lookahead, boolean goingForward) {
+    // m_controller = new PurePursuitController(traj, lookahead, goingForward, DriveConstants.kDrivetrainWidth);
+    m_controller = new AdaptivePurePursuitController(traj, lookahead, goingForward, DriveConstants.kDrivetrainWidth);
     requires(Robot.drive);
   }
 
