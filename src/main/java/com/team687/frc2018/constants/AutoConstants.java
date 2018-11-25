@@ -9,12 +9,13 @@ public class AutoConstants {
 
     // pathfinder constants
     public static final double dt = 0.02;
-    public static final double kAcceleration = 8;
-    public static final double kCruiseVelocity = 5;
+    // max speed and accel
+    public static final double kAcceleration = 13;
+    public static final double kCruiseVelocity = 13;
     // Jerk is set to a high number since jerk barely matters, poofs don't jerk anymore
     public static final double kJerk = 100;
 
-    private static Config test_config = new Config(Trajectory.FitMethod.HERMITE_CUBIC, Config.SAMPLES_HIGH, dt, kCruiseVelocity, kAcceleration, kJerk);
+    private static Config test_config = new Config(Trajectory.FitMethod.HERMITE_CUBIC, Config.SAMPLES_HIGH, dt, kCruiseVelocity/3, kAcceleration/5, kJerk);
     private static Waypoint[] test_points = new Waypoint[] {
         new Waypoint(0, 0, 0),
         new Waypoint(5, 5, 0)  
