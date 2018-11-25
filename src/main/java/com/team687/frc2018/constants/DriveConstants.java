@@ -3,16 +3,16 @@ package com.team687.frc2018.constants;
 public class DriveConstants {
 
 //	TalonSRX Constants
-	public static final double kLeftP = 0.0971;
+	public static final double kLeftP = 0.1;
 	public static final double kLeftI = 0;
-	public static final double kLeftD = 0.3;
-	public static final double kLeftF = 0.30169975;
+	public static final double kLeftD = 0.619;
+	public static final double kLeftF = 0.25169975;
 	
 	
-	public static final double kRightP = 0.095;
+	public static final double kRightP = 0.1;
 	public static final double kRightI = 0;
-	public static final double kRightD = 0.3;
-	public static final double kRightF = 0.254386;
+	public static final double kRightD = 0.619;
+	public static final double kRightF = 0.204386;
 	
 	public static final double kLeftStatic = 1.242/12;
 
@@ -36,9 +36,9 @@ public class DriveConstants {
 	
 //	Physical Robot Constants
 	public static final double kWheelDiameter = 6;
-	public static final double kDrivetrainWidth = 2.09766;
-	public static final double kTicksPerFootLeft = 2607.594588;
-	public static final double kTicksPerFootRight = 2607.594588;
+	public static final double kDrivetrainWidth = 2.108211152;
+	public static final double kTicksPerFootLeft = 2455.8;
+	public static final double kTicksPerFootRight = 2188.2;
 	
 //	Other Constants 
 	public static final double kJoystickDeadband = 0.1;

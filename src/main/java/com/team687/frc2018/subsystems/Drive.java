@@ -42,6 +42,7 @@ public class Drive extends Subsystem {
     private boolean writeException = false;
 	private double m_logStartTime = 0;
 	private double m_leftDesiredVel, m_rightDesiredVel;
+	public double m_lookaheadX, m_lookaheadY;
 	private VelocityPIDF m_velocityPIDF;
 	private Notifier m_velocityNotifier;
     
@@ -241,6 +242,19 @@ public class Drive extends Subsystem {
 		setVelocity(fpsToTalonVelocityUnits(leftVel, DriveConstants.kTicksPerFootLeft), fpsToTalonVelocityUnits(rightVel, DriveConstants.kTicksPerFootRight));
 	}
 
+	public double getPitch() {
+		return m_nav.getPitch();
+	}
+
+	public double getRoll() {
+		return m_nav.getRoll();
+	}
+
+	public void updateLookahead(double x, double y) {
+		m_lookaheadX = x;
+		m_lookaheadY = y;
+	}
+
 
     public void reportToSmartDashboard() {
     	SmartDashboard.putNumber("Left Master Voltage", getLeftOutputVoltage());
@@ -290,7 +304,8 @@ public class Drive extends Subsystem {
 			try {
 				m_writer = new FileWriter(m_file);
 				m_writer.append("Time,RightPosition,LeftPosition,RightVelocity,LeftVelocity,RightDesiredVel,LeftDesiredVel,RightVoltage,LeftVoltage,"
-						+ "RightMasterCurrent,LeftMasterCurrent,RightSlaveCurrent,LeftSlaveCurrent,BusVoltage,Yaw\n");
+						+ "RightMasterCurrent,LeftMasterCurrent,RightSlaveCurrent,LeftSlaveCurrent,BusVoltage,Yaw,Pitch,Roll,LeftSlaveVoltage,RightSlaveVoltage," +
+						"LeftVelocityFPS,RightVelocityFPS,RobotX,RobotY,LookaheadX,LookaheadY\n");
 				m_writer.flush();
 				m_logStartTime = Timer.getFPGATimestamp();
 			} catch (IOException e) {
@@ -323,7 +338,10 @@ public class Drive extends Subsystem {
 						+ String.valueOf(m_leftMaster.getOutputCurrent()) + ","
 						+ String.valueOf(m_rightSlave1.getOutputCurrent()) + ","
 						+ String.valueOf(m_leftSlave1.getOutputCurrent()) + "," 
-						+ String.valueOf(getRawYaw()) + "\n");
+						+ String.valueOf(getRawYaw()) + "," + String.valueOf(getPitch()) + "," + String.valueOf(getRoll()) +
+						"," + String.valueOf(m_leftSlave1.getMotorOutputVoltage()) + "," + String.valueOf(m_rightSlave1.getMotorOutputVoltage()) + 
+						"," + String.valueOf(getLeftVelocityFeet()) + "," + String.valueOf(getRightVelocityFeet()) +  "," + String.valueOf(m_currentX) + "," 
+						+ String.valueOf(m_currentY) + "," + String.valueOf(m_lookaheadX) +"," + String.valueOf(m_lookaheadY) + "\n");
 				m_writer.flush();
 			} catch (IOException e) {
 				e.printStackTrace();

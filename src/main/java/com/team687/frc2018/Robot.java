@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class Robot extends TimedRobot {
 
-    public static final String kDate = "2018_11_09_";
+    public static final String kDate = "2018_11_16_";
 
     public static Drive drive;
     public static Arm arm;
@@ -78,8 +78,8 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
 	// Scheduler.getInstance().removeAll();
 	// drive.resetEncoders();
-	drive.resetYaw();
-
+	// drive.resetYaw();
+	drive.calcXY();
 	drive.reportToSmartDashboard();
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
+	drive.calcXY();
 	drive.startLog();
 	arm.startLog();
 	wrist.startLog();
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+	drive.calcXY();
 	Scheduler.getInstance().run();
 
 	drive.reportToSmartDashboard();

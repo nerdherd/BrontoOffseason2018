@@ -1,7 +1,6 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
-import com.team687.frc2018.commands.drive.auto.DriveOpenLoop;
 import com.team687.frc2018.commands.drive.auto.DrivePurePursuit;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
