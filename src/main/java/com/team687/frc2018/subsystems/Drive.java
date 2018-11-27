@@ -250,6 +250,30 @@ public class Drive extends Subsystem {
 		return m_nav.getRoll();
 	}
 
+	public double getAngularVelocityX() {
+		return m_nav.getRawGyroX();
+	}
+
+	public double getAngularVelocityY() {
+		return m_nav.getRawGyroY();
+	}
+
+	public double getAngularVelocityZ() {
+		return m_nav.getRawGyroZ();
+	}
+
+	public double getAccelX() {
+		return m_nav.getWorldLinearAccelX();
+	}
+
+	public double getAccelY() {
+		return m_nav.getWorldLinearAccelY();
+	}
+
+	public double getAccelZ() {
+		return m_nav.getWorldLinearAccelZ();
+	}
+
 	public void updateLookahead(double x, double y) {
 		m_lookaheadX = x;
 		m_lookaheadY = y;
@@ -305,7 +329,7 @@ public class Drive extends Subsystem {
 				m_writer = new FileWriter(m_file);
 				m_writer.append("Time,RightPosition,LeftPosition,RightVelocity,LeftVelocity,RightDesiredVel,LeftDesiredVel,RightVoltage,LeftVoltage,"
 						+ "RightMasterCurrent,LeftMasterCurrent,RightSlaveCurrent,LeftSlaveCurrent,BusVoltage,Yaw,Pitch,Roll,LeftSlaveVoltage,RightSlaveVoltage," +
-						"LeftVelocityFPS,RightVelocityFPS,RobotX,RobotY,LookaheadX,LookaheadY\n");
+						"LeftVelocityFPS,RightVelocityFPS,RobotX,RobotY,LookaheadX,LookaheadY,AngularVelX,AngularVelY,AngularVelZ,AccelX,AccelY,AccelZ\n");
 				m_writer.flush();
 				m_logStartTime = Timer.getFPGATimestamp();
 			} catch (IOException e) {
@@ -341,7 +365,8 @@ public class Drive extends Subsystem {
 						+ String.valueOf(getRawYaw()) + "," + String.valueOf(getPitch()) + "," + String.valueOf(getRoll()) +
 						"," + String.valueOf(m_leftSlave1.getMotorOutputVoltage()) + "," + String.valueOf(m_rightSlave1.getMotorOutputVoltage()) + 
 						"," + String.valueOf(getLeftVelocityFeet()) + "," + String.valueOf(getRightVelocityFeet()) +  "," + String.valueOf(m_currentX) + "," 
-						+ String.valueOf(m_currentY) + "," + String.valueOf(m_lookaheadX) +"," + String.valueOf(m_lookaheadY) + "\n");
+						+ String.valueOf(m_currentY) + "," + String.valueOf(m_lookaheadX) +"," + String.valueOf(m_lookaheadY) + "," + String.valueOf(getAngularVelocityX()) + "," + String.valueOf(getAngularVelocityY()) +
+						"," + String.valueOf(getAngularVelocityZ()) + "," + String.valueOf(getAccelX()) + "," + String.valueOf(getAccelY()) + "," + String.valueOf(getAccelZ()) + "\n");
 				m_writer.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
