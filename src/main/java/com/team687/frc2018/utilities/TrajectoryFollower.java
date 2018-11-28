@@ -1,37 +1,41 @@
 package com.team687.frc2018.utilities;
 
+
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 import java.util.Arrays;
 import java.util.List;
 
-public class AdaptivePurePursuitController {
+public class TrajectoryFollower {
 
     private Trajectory m_trajectory;
     private Segment m_robotSegment, m_lookaheadSegment;
     private Boolean m_goingForwards;
 
-    private double m_robotX, m_robotY, m_angle, m_targetAngle, m_goalX, m_goalY, m_xOffset, m_velocity,
-            m_innerVelocity, m_error, m_driveRadius, m_width, m_leftDesiredVel,
-            m_rightDesiredVel, m_lookaheadDistance;
+    private double m_robotX, m_robotY, m_targetAngle, m_goalX, m_goalY, m_velocity,
+            m_error, m_leftDesiredVel,
+            m_rightDesiredVel, m_kP, m_kD, m_turn, m_dT, m_lastError;
     private int m_lookaheadIndex, m_robotIndex, m_lookahead;
     private List<Segment> m_trajectoryList;
 
 
 
-    public AdaptivePurePursuitController(Trajectory traj, int lookahead, boolean goingForwards, double width) {
+
+    public TrajectoryFollower(Trajectory traj, int lookahead, boolean goingForwards, double kP, double kD) {
         m_trajectory = traj;
         m_lookahead = lookahead;
         m_goingForwards = goingForwards;
-        m_width = width;
         m_robotIndex = 0;
+        m_kP = kP;
+        m_kD = kD;
         m_trajectoryList = Arrays.asList(m_trajectory.segments);
         m_lookaheadIndex = 0;
+        m_lastError = 0;
 
     }
 
-    public void calculate(double robotX, double robotY, double robotTheta) {
+    public void calculate(double robotX, double robotY, double robotTheta, double dT) {
         m_robotX = robotX;
         m_robotY = robotY;
         m_robotSegment = getClosestSegment(m_robotX, m_robotY, m_trajectory, m_robotIndex, 5);
@@ -43,47 +47,21 @@ public class AdaptivePurePursuitController {
         m_lookaheadSegment = m_trajectory.get(m_lookaheadIndex);
         m_goalX = m_lookaheadSegment.x;
         m_goalY = m_lookaheadSegment.y;
-        m_angle = -(360 - robotTheta) % 360;
-        m_targetAngle = Math.toDegrees(Math.atan2(m_goalX - m_robotX, m_goalY - m_robotY));
-        m_error = Pathfinder.boundHalfDegrees(m_targetAngle - m_angle);
-        m_lookaheadDistance = NerdyMath.distanceFormula(m_robotX, m_robotY, m_goalX, m_goalY);
-        m_xOffset = Math.abs(m_lookaheadDistance * Math.cos(Math.toRadians(m_error)));
+//        m_angle = -(360 - robotTheta) % 360;
         m_velocity = m_robotSegment.velocity;
         if (!m_goingForwards) {
             m_velocity *= -1;
+            robotTheta += 180;
         }
-        if (m_xOffset > 0) {
-            m_driveRadius = (Math.pow(m_lookaheadDistance, 2)) / (2 * m_xOffset);
-            m_innerVelocity = m_velocity * (m_driveRadius - (m_width / 2)) / (m_driveRadius + (m_width / 2));
-            if (m_goingForwards) {
-                if (Math.signum(m_error) == -1) {
-                    m_leftDesiredVel = m_innerVelocity;
-                    m_rightDesiredVel = m_velocity;
-                } else {
-                    m_leftDesiredVel = m_velocity;
-                    m_rightDesiredVel = m_innerVelocity;
-                }
-            } else {
-                if (Math.signum(m_error) == 1) {
-                    m_leftDesiredVel = m_innerVelocity;
-                    m_rightDesiredVel = m_velocity;
-                } else {
-                    m_leftDesiredVel = m_velocity;
-                    m_rightDesiredVel = m_innerVelocity;
-                }
-            }
-        }
-        else {
-            m_leftDesiredVel = m_velocity;
-            m_rightDesiredVel = m_velocity;
-        }
-//        System.out.println(m_robotIndex);
-//        System.out.println(Math.cos(Math.toRadians(m_error)));
-        System.out.println(m_lookaheadDistance);
-
+        m_targetAngle = Math.toDegrees(Math.atan2(m_goalX - m_robotX, m_goalY - m_robotY));
+        m_error = Pathfinder.boundHalfDegrees(m_targetAngle - robotTheta);
+        m_turn = m_error * m_kP + (m_error - m_lastError)/dT * m_kD;
+        m_leftDesiredVel = m_velocity + m_turn;
+        m_rightDesiredVel = m_velocity - m_turn;
     }
+
     public boolean isFinished() {
-        return m_trajectory.length()-2 == m_robotIndex;
+        return m_trajectory.length() - 3 == m_robotIndex;
     }
 
     public double getLeftVelocity() {
@@ -96,7 +74,6 @@ public class AdaptivePurePursuitController {
 
     public static Trajectory.Segment getClosestSegment(double x, double y, Trajectory trajectory, int index, int range) {
         double min = 1000000;
-        int segIndex = 0;
         int counter = index - range;
         int max = index + range;
         if (max > trajectory.length() - 1) {

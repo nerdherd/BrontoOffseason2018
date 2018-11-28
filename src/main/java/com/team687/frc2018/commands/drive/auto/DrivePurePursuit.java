@@ -38,7 +38,6 @@ public class DrivePurePursuit extends Command {
     m_controller.calculate(Robot.drive.getXpos(), Robot.drive.getYpos(), Robot.drive.getRawYaw());
     m_leftVelocity = m_controller.getLeftVelocity();
     m_rightVelocity = m_controller.getRightVelocity();
-    Robot.drive.updateLookahead(m_controller.m_goalX, m_controller.m_goalY);
     Robot.drive.setVelocityFPS(m_leftVelocity, m_rightVelocity);
   }
 
