@@ -17,7 +17,7 @@ import jaci.pathfinder.Trajectory;
 public class DriveTrajectory extends Command {
   
   private TrajectoryFollower m_controller;
-  private double m_startTime, m_time, m_lastTime;
+  private double m_leftVelocity, m_rightVelocity, m_startTime, m_time, m_lastTime;
 
   public DriveTrajectory(Trajectory traj, int lookahead, Boolean goingForwards, double kP, double kD) {
     m_controller = new TrajectoryFollower(traj, lookahead, goingForwards, kP, kD);
