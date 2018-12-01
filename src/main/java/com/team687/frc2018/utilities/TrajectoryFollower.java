@@ -51,9 +51,12 @@ public class TrajectoryFollower {
         m_velocity = m_robotSegment.velocity;
         if (!m_goingForwards) {
             m_velocity *= -1;
-            robotTheta += 180;
+            // robotTheta += 180;
         }
-        m_targetAngle = Math.toDegrees(Math.atan2(m_goalX - m_robotX, m_goalY - m_robotY));
+        // WORKS
+        // m_targetAngle = Math.toDegrees(Math.atan2(m_goalX - m_robotX, m_goalY - m_robotY));
+        
+        m_targetAngle = (-(Math.toDegrees(m_lookaheadSegment.heading) + 90) % 360) - 180;
         m_error = Pathfinder.boundHalfDegrees(m_targetAngle - robotTheta);
         m_turn = m_error * m_kP + (m_error - m_lastError)/dT * m_kD;
         m_leftDesiredVel = m_velocity + m_turn;

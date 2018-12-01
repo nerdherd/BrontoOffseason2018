@@ -1,6 +1,7 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.arm.ResetArmEncoder;
+import com.team687.frc2018.commands.drive.auto.DriveTime;
 import com.team687.frc2018.commands.drive.auto.DriveTrajectory;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
@@ -21,7 +22,7 @@ import com.team687.frc2018.commands.superstructure.SwitchScorePositionTeleop;
 import com.team687.frc2018.commands.wrist.ResetWristEncoder;
 import com.team687.frc2018.constants.AutoConstants;
 import com.team687.frc2018.constants.SuperstructureConstants;
-import com.team687.frc2018.commands.drive.auto.DriveTrajectory;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -104,8 +105,11 @@ public class OI {
 	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
 	
 	// SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 10, true));
-    SmartDashboard.putData("Path Follower Test", new DriveTrajectory(AutoConstants.testTraj, 3, true, 0.1, 0));
+    SmartDashboard.putData("Path Follower Test", new DriveTrajectory(AutoConstants.testTraj, 10, true, 0.1, 0));
     SmartDashboard.putData("Velocity Test", new VelocityTest(1000, 5));
+    SmartDashboard.putData("Open Claw", new ClawOpen());
+    SmartDashboard.putData("Close Claw", new ClawClose());
+    SmartDashboard.putData("Line Cross", new DriveTime(0.3, 5));
     // test velocity at around 1/4 - 1/3 of max velocity
     }
 

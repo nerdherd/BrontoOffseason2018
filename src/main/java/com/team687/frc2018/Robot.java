@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class Robot extends TimedRobot {
 
-    public static final String kDate = "2018_11_16_";
+    public static final String kDate = "2018_11_30_";
 
     public static Drive drive;
     public static Arm arm;

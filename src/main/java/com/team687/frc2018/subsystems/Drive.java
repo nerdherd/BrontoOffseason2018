@@ -164,7 +164,8 @@ public class Drive extends Subsystem {
 	
 	
 	public double getRawYaw() {
-		return Pathfinder.boundHalfDegrees(m_nav.getYaw());
+        // return Pathfinder.boundHalfDegrees(m_nav.getYaw());
+        return m_nav.getFusedHeading();
 	}
 	
 	public void resetYaw() {

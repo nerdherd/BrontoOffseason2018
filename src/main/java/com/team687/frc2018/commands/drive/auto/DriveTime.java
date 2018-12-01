@@ -36,9 +36,9 @@ public class DriveTime extends Command {
 
     @Override
     protected void execute() {
-	Robot.drive.setPower((DriveConstants.kLeftAdjustment * m_straightPower), m_straightPower);
+	Robot.drive.setPower(m_straightPower, m_straightPower);
     }
-
+// so, like, Dipsy made some comments on ur code. Hah. Hahaha. Good luck figuring out what we changed in your drive system. ;)
     @Override
     protected boolean isFinished() {
 	return Timer.getFPGATimestamp() - m_startTime > m_timeout;
