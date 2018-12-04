@@ -46,7 +46,7 @@ public class DriveToXY extends Command {
     	if (m_direction == -1) {
     		m_desiredAngle += 180;
     	}
-    	m_rotationalError = -m_desiredAngle - Robot.drive.getAngle();
+    	m_rotationalError = -m_desiredAngle - Robot.drive.getRawYaw();
     	m_rotationalPower = m_rotationalError * DriveConstants.kRotP;
     	if (m_rotationalError >= 180) {
     		m_rotationalError -= 360;

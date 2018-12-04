@@ -13,11 +13,10 @@ public class TrajectoryFollower {
     private Segment m_robotSegment, m_lookaheadSegment;
     private Boolean m_goingForwards;
 
-    private double m_robotX, m_robotY, m_targetAngle, m_goalX, m_goalY, m_velocity,
-            m_error, m_leftDesiredVel,
-            m_rightDesiredVel, m_kP, m_kD, m_turn, m_dT, m_lastError;
+    private double m_robotX, m_robotY, m_targetAngle, m_velocity,
+            m_error, m_leftDesiredVel, m_rightDesiredVel, m_kP, m_kD, m_turn, m_dT, m_lastError;
     private int m_lookaheadIndex, m_robotIndex, m_lookahead;
-    private List<Segment> m_trajectoryList;
+    private List m_trajectoryList;
 
 
 
@@ -45,26 +44,16 @@ public class TrajectoryFollower {
             m_lookaheadIndex = m_trajectory.length() - 1;
         }
         m_lookaheadSegment = m_trajectory.get(m_lookaheadIndex);
-        m_goalX = m_lookaheadSegment.x;
-        m_goalY = m_lookaheadSegment.y;
-//        m_angle = -(360 - robotTheta) % 360;
-        m_velocity = m_robotSegment.velocity;
-        if (!m_goingForwards) {
-            m_velocity *= -1;
-            // robotTheta += 180;
-        }
-        // WORKS
-        // m_targetAngle = Math.toDegrees(Math.atan2(m_goalX - m_robotX, m_goalY - m_robotY));
-        
-        m_targetAngle = (-(Math.toDegrees(m_lookaheadSegment.heading) + 90) % 360) - 180;
+        m_targetAngle = Math.toDegrees(m_lookaheadSegment.heading);
         m_error = Pathfinder.boundHalfDegrees(m_targetAngle - robotTheta);
+        m_velocity = m_robotSegment.velocity;
         m_turn = m_error * m_kP + (m_error - m_lastError)/dT * m_kD;
-        m_leftDesiredVel = m_velocity + m_turn;
-        m_rightDesiredVel = m_velocity - m_turn;
+        m_leftDesiredVel = m_velocity - m_turn;
+        m_rightDesiredVel = m_velocity + m_turn;
     }
 
     public boolean isFinished() {
-        return m_trajectory.length() - 3 == m_robotIndex;
+        return m_trajectory.length()-3 == m_robotIndex;
     }
 
     public double getLeftVelocity() {
@@ -77,6 +66,7 @@ public class TrajectoryFollower {
 
     public static Trajectory.Segment getClosestSegment(double x, double y, Trajectory trajectory, int index, int range) {
         double min = 1000000;
+        int segIndex = 0;
         int counter = index - range;
         int max = index + range;
         if (max > trajectory.length() - 1) {

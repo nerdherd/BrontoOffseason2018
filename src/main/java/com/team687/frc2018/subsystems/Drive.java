@@ -164,8 +164,7 @@ public class Drive extends Subsystem {
 	
 	
 	public double getRawYaw() {
-        // return Pathfinder.boundHalfDegrees(m_nav.getYaw());
-        return m_nav.getFusedHeading();
+        return -m_nav.getFusedHeading();
 	}
 	
 	public void resetYaw() {
@@ -176,12 +175,12 @@ public class Drive extends Subsystem {
 		return (getRightMasterPosition() + getLeftMasterPosition())/2;
 	}
 	
-	public double getAngle() {
-//		converts angle from -180 to 180 to 0 to 360	
-//		sets positive y as 0 deg, robot's front is 0 deg
-		return (360 - getRawYaw()) % 360;
+// 	public double getAngle() {
+// //		converts angle from -180 to 180 to 0 to 360	
+// //		sets positive y as 0 deg, robot's front is 0 deg
+// 		return (360 - getRawYaw()) % 360;
 		
-	}
+// 	}
 	
     public void initDefaultCommand() {
         setDefaultCommand(new ArcadeDrive());
@@ -197,8 +196,8 @@ public class Drive extends Subsystem {
     	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
     	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
     	double angle = getRawYaw();
-    	m_currentX = m_currentX + m_distanceTraveled * Math.sin(Math.toRadians(angle));
-    	m_currentY = m_currentY + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+    	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+    	m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
     	m_previousDistance = m_currentDistance;
     }
     

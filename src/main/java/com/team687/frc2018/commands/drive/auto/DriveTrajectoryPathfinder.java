@@ -64,7 +64,7 @@ public class DriveTrajectoryPathfinder extends Command {
     m_angularError = Pathfinder.boundHalfDegrees(Pathfinder.r2d(-m_leftFollower.getHeading()) - Robot.drive.getRawYaw());
     m_turn = DriveConstants.kRotP * m_angularError;
     Robot.drive.addDesiredVelocities(m_leftFollower.getSegment().velocity, m_rightFollower.getSegment().velocity);
-    Robot.drive.setPower(m_leftOutput + m_turn, m_rightOutput - m_turn);
+    Robot.drive.setPower(m_leftOutput - m_turn, m_rightOutput + m_turn);
     SmartDashboard.putNumber("Velocity", m_leftFollower.getSegment().velocity);
   }
 
