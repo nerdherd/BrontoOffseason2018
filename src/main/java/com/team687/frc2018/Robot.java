@@ -72,6 +72,10 @@ public class Robot extends TimedRobot {
 	drive.stopLog();
 	arm.stopLog();
 	wrist.stopLog();
+
+	drive.stopOdometry();
+	drive.resetXY();
+	drive.startOdometry();
     }
 
     @Override

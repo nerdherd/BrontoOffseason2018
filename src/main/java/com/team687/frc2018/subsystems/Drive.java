@@ -44,7 +44,7 @@ public class Drive extends Subsystem {
 	private double m_leftDesiredVel, m_rightDesiredVel;
 	public double m_lookaheadX, m_lookaheadY;
 	private VelocityPIDF m_velocityPIDF;
-	private Notifier m_velocityNotifier;
+	private Notifier m_velocityNotifier, m_odometry;
     
 	public Drive() {
 		
@@ -91,6 +91,23 @@ public class Drive extends Subsystem {
 		m_leftMaster.configDefaultSettings();
 		m_leftSlave1.configDefaultSettings();
 
+		Notifier m_odometry = new Notifier(() -> {
+			double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+			double m_distanceTraveled = (m_currentDistance - m_previousDistance);
+			double angle = getRawYaw();
+			m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+			m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
+			m_previousDistance = m_currentDistance;
+		});
+
+	}
+	
+	public void startOdometry() {
+		m_odometry.startPeriodic(0.02);
+	}
+
+	public void stopOdometry() {
+		m_odometry.stop();
 	}
 	
 	public void setPower(double leftPower, double rightPower) {
@@ -192,13 +209,12 @@ public class Drive extends Subsystem {
 	}
 	
     public void calcXY() {
-    	// calculate x,y coordinates when moving in straight lines and turning in place, DOES NOT WORK
-    	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
-    	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
-    	double angle = getRawYaw();
-    	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
-    	m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
-    	m_previousDistance = m_currentDistance;
+    	// double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+    	// double m_distanceTraveled = (m_currentDistance - m_previousDistance);
+    	// double angle = getRawYaw();
+    	// m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+    	// m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
+    	// m_previousDistance = m_currentDistance;
     }
     
     public double getXpos() {
