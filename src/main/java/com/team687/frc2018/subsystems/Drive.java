@@ -209,12 +209,12 @@ public class Drive extends Subsystem {
 	}
 	
     public void calcXY() {
-    	// double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
-    	// double m_distanceTraveled = (m_currentDistance - m_previousDistance);
-    	// double angle = getRawYaw();
-    	// m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
-    	// m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
-    	// m_previousDistance = m_currentDistance;
+    	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+    	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
+    	double angle = getRawYaw();
+    	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+    	m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
+    	m_previousDistance = m_currentDistance;
     }
     
     public double getXpos() {

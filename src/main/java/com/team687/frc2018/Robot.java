@@ -73,9 +73,9 @@ public class Robot extends TimedRobot {
 	arm.stopLog();
 	wrist.stopLog();
 
-	drive.stopOdometry();
-	drive.resetXY();
-	drive.startOdometry();
+	// drive.stopOdometry();
+	// drive.resetXY();
+	// drive.startOdometry();
     }
 
     @Override
@@ -119,6 +119,7 @@ public class Robot extends TimedRobot {
 	arm.reportToSmartDashboard();
 	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
+	
 	drive.calcXY();
 	drive.startLog();
 	arm.startLog();
