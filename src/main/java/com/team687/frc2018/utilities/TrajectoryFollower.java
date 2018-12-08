@@ -43,17 +43,21 @@ public class TrajectoryFollower {
         if (m_lookaheadIndex > m_trajectory.length() - 1) {
             m_lookaheadIndex = m_trajectory.length() - 1;
         }
+        m_velocity = m_robotSegment.velocity;
         m_lookaheadSegment = m_trajectory.get(m_lookaheadIndex);
         m_targetAngle = Math.toDegrees(m_lookaheadSegment.heading);
+        if (!m_goingForwards) {
+            robotTheta += 180;
+            m_velocity = -m_velocity; 
+        }
         m_error = Pathfinder.boundHalfDegrees(m_targetAngle - robotTheta);
-        m_velocity = m_robotSegment.velocity;
         m_turn = m_error * m_kP + (m_error - m_lastError)/dT * m_kD;
         m_leftDesiredVel = m_velocity - m_turn;
         m_rightDesiredVel = m_velocity + m_turn;
     }
 
     public boolean isFinished() {
-        return m_trajectory.length()-3 == m_robotIndex;
+        return m_trajectory.length() - 10 < m_robotIndex;
     }
 
     public double getLeftVelocity() {

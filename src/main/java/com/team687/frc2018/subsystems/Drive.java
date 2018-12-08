@@ -91,24 +91,24 @@ public class Drive extends Subsystem {
 		m_leftMaster.configDefaultSettings();
 		m_leftSlave1.configDefaultSettings();
 
-		Notifier m_odometry = new Notifier(() -> {
-			double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
-			double m_distanceTraveled = (m_currentDistance - m_previousDistance);
-			double angle = getRawYaw();
-			m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
-			m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
-			m_previousDistance = m_currentDistance;
-		});
+		// Notifier m_odometry = new Notifier(() -> {
+		// 	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+		// 	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
+        // 	double angle = getRawYaw();
+		// 	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
+		// 	m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
+		// 	m_previousDistance = m_currentDistance;
+		// });
 
 	}
 	
-	public void startOdometry() {
-		m_odometry.startPeriodic(0.02);
-	}
+	// public void startOdometry() {
+	// 	m_odometry.startPeriodic(0.02);
+	// }
 
-	public void stopOdometry() {
-		m_odometry.stop();
-	}
+	// public void stopOdometry() {
+	// 	m_odometry.stop();
+	// }
 	
 	public void setPower(double leftPower, double rightPower) {
 
@@ -181,7 +181,7 @@ public class Drive extends Subsystem {
 	
 	
 	public double getRawYaw() {
-        return -m_nav.getFusedHeading();
+        return -m_nav.getAngle();
 	}
 	
 	public void resetYaw() {
@@ -209,7 +209,7 @@ public class Drive extends Subsystem {
 	}
 	
     public void calcXY() {
-    	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
+    	double m_currentDistance = (getRightPositionFeet() + getLeftPositionFeet())/2;
     	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
     	double angle = getRawYaw();
     	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));

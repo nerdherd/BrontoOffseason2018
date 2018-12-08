@@ -80,7 +80,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-	// Scheduler.getInstance().removeAll();
+    Scheduler.getInstance().removeAll();
+    Scheduler.getInstance().run();
 	// drive.resetEncoders();
 	// drive.resetYaw();
 	drive.calcXY();
@@ -123,7 +124,8 @@ public class Robot extends TimedRobot {
 	drive.calcXY();
 	drive.startLog();
 	arm.startLog();
-	wrist.startLog();
+    wrist.startLog();
+    Scheduler.getInstance().run();
     }
 
     @Override

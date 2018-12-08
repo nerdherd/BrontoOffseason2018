@@ -11,6 +11,7 @@ import com.team687.frc2018.commands.drive.characterization.VelocityTest;
 import com.team687.frc2018.commands.intake.ClawClose;
 import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
+import com.team687.frc2018.commands.routines.ChainedPathAuto;
 import com.team687.frc2018.commands.superstructure.AdjustForwardsScale;
 import com.team687.frc2018.commands.superstructure.DefaultIntake;
 import com.team687.frc2018.commands.superstructure.DefaultStow;
@@ -105,7 +106,7 @@ public class OI {
 	SmartDashboard.putData("3 V drivetrain open loop", new OpenLoopDrive(0.25));
 	
 	// SmartDashboard.putData("Pure Pursuit Test", new DrivePurePursuit(AutoConstants.testTraj, 10, true));
-    SmartDashboard.putData("Path Follower Test", new DriveTrajectory(AutoConstants.testTraj, 10, true, 0.1, 0));
+    SmartDashboard.putData("Path Follower Test", new DriveTrajectory(AutoConstants.backwardsTrajectory, 10, false, 0.2, 0));
     SmartDashboard.putData("Velocity Test", new VelocityTest(1000, 5));
     SmartDashboard.putData("Open Claw", new ClawOpen());
     SmartDashboard.putData("Close Claw", new ClawClose());
