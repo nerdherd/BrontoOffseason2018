@@ -5,42 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team687.frc2018.commands.drive.auto;
+package com.team687.frc2018.commands.generic.piston;
+
+import com.team687.frc2018.utilities.Piston;
 
 import edu.wpi.first.wpilibj.command.Command;
-import com.team687.frc2018.Robot;
 
-public class DriveOpenLoop extends Command {
-
-  public DriveOpenLoop() {
-    requires(Robot.drive);
+public class RetractPiston extends Command {
+  private Piston m_piston;
+  public RetractPiston(Piston piston) {
+    m_piston = piston;
+    requires(m_piston);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    m_piston.setReverse();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drive.setPower(0.9, 0.9);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+    return true;
   }
 }

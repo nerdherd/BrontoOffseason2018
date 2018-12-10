@@ -11,17 +11,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team687.frc2018.RobotMap;
-import com.team687.frc2018.commands.drive.characterization.VelocityPIDF;
 import com.team687.frc2018.commands.drive.teleop.ArcadeDrive;
 import com.team687.frc2018.constants.DriveConstants;
 import com.team687.frc2018.utilities.NerdyTalon;
 import com.team687.frc2018.Robot;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Pathfinder;
 
 /**
  *
@@ -43,8 +40,6 @@ public class Drive extends Subsystem {
 	private double m_logStartTime = 0;
 	private double m_leftDesiredVel, m_rightDesiredVel;
 	public double m_lookaheadX, m_lookaheadY;
-	private VelocityPIDF m_velocityPIDF;
-	private Notifier m_velocityNotifier, m_odometry;
     
 	public Drive() {
 		
@@ -76,8 +71,8 @@ public class Drive extends Subsystem {
 		m_rightMaster.configPIDF(DriveConstants.kRightP, DriveConstants.kRightI, DriveConstants.kRightD, DriveConstants.kRightF, 0);
 		m_leftMaster.configPIDF(DriveConstants.kLeftP, DriveConstants.kLeftI, DriveConstants.kLeftD, DriveConstants.kLeftF, 0);
 
-		// m_leftMaster.configMotionMagic(DriveConstants.kLeftAcceleration, DriveConstants.kLeftCruiseVelocity);
-		// m_rightMaster.configMotionMagic(DriveConstants.kRightAcceleration, DriveConstants.kRightCruiseVelocity);
+		m_leftMaster.configMotionMagic(DriveConstants.kLeftAcceleration, DriveConstants.kLeftCruiseVelocity);
+		m_rightMaster.configMotionMagic(DriveConstants.kRightAcceleration, DriveConstants.kRightCruiseVelocity);
 
 		m_leftMaster.setNeutralMode(NeutralMode.Brake);
 		m_leftSlave1.setNeutralMode(NeutralMode.Brake);
@@ -91,24 +86,9 @@ public class Drive extends Subsystem {
 		m_leftMaster.configDefaultSettings();
 		m_leftSlave1.configDefaultSettings();
 
-		// Notifier m_odometry = new Notifier(() -> {
-		// 	double m_currentDistance = (getRightPositionFeet() +getLeftPositionFeet())/2;
-		// 	double m_distanceTraveled = (m_currentDistance - m_previousDistance);
-        // 	double angle = getRawYaw();
-		// 	m_currentX = m_currentX + m_distanceTraveled * Math.cos(Math.toRadians(angle));
-		// 	m_currentY = m_currentY + m_distanceTraveled * Math.sin(Math.toRadians(angle));
-		// 	m_previousDistance = m_currentDistance;
-		// });
-
 	}
 	
-	// public void startOdometry() {
-	// 	m_odometry.startPeriodic(0.02);
-	// }
 
-	// public void stopOdometry() {
-	// 	m_odometry.stop();
-	// }
 	
 	public void setPower(double leftPower, double rightPower) {
 
@@ -191,13 +171,6 @@ public class Drive extends Subsystem {
 	public double getAverageEncoderPosition() {
 		return (getRightMasterPosition() + getLeftMasterPosition())/2;
 	}
-	
-// 	public double getAngle() {
-// //		converts angle from -180 to 180 to 0 to 360	
-// //		sets positive y as 0 deg, robot's front is 0 deg
-// 		return (360 - getRawYaw()) % 360;
-		
-// 	}
 	
     public void initDefaultCommand() {
         setDefaultCommand(new ArcadeDrive());
