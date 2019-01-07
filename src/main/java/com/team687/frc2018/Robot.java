@@ -1,9 +1,7 @@
 package com.team687.frc2018;
 
-import com.team687.frc2018.subsystems.Arm;
 import com.team687.frc2018.subsystems.Drive;
 import com.team687.frc2018.subsystems.Intake;
-import com.team687.frc2018.subsystems.Wrist;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,8 +17,6 @@ public class Robot extends TimedRobot {
     public static final String kDate = "2018_11_30_";
 
     public static Drive drive;
-    public static Arm arm;
-    public static Wrist wrist;
     public static Intake intake;
 
     public static DriverStation ds;
@@ -41,14 +37,6 @@ public class Robot extends TimedRobot {
 	compressor = new Compressor();
 	compressor.start();
 
-	arm = new Arm();
-	arm.setVoltage(0);
-	arm.resetEncoder();
-
-	wrist = new Wrist();
-	wrist.setPercentOutput(0);
-	wrist.resetEncoder();
-
 	intake = new Intake();
 	intake.setRollerPower(0);
 
@@ -66,12 +54,9 @@ public class Robot extends TimedRobot {
 	Scheduler.getInstance().removeAll();
 
 	drive.reportToSmartDashboard();
-	arm.reportToSmartDashboard();
-	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
 	drive.stopLog();
-	arm.stopLog();
-	wrist.stopLog();
+
 
 	// drive.stopOdometry();
 	// drive.resetXY();
@@ -86,8 +71,6 @@ public class Robot extends TimedRobot {
 	// drive.resetYaw();
 	drive.calcXY();
 	drive.reportToSmartDashboard();
-	arm.reportToSmartDashboard();
-	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
     }
 
@@ -106,8 +89,6 @@ public class Robot extends TimedRobot {
 	Scheduler.getInstance().run();
 
 	drive.reportToSmartDashboard();
-	arm.reportToSmartDashboard();
-	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
 	// drive.logToCSV();
 	// arm.logToCSV();
@@ -117,14 +98,10 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
 	drive.reportToSmartDashboard();
-	arm.reportToSmartDashboard();
-	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
 	
 	drive.calcXY();
 	drive.startLog();
-	arm.startLog();
-    wrist.startLog();
     Scheduler.getInstance().run();
     }
 
@@ -134,12 +111,8 @@ public class Robot extends TimedRobot {
 	Scheduler.getInstance().run();
 
 	drive.reportToSmartDashboard();
-	arm.reportToSmartDashboard();
-	wrist.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
 	drive.logToCSV();
-	arm.logToCSV();
-	wrist.logToCSV();
 	}
 
     @Override
