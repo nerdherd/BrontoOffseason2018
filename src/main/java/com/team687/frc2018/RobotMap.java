@@ -9,22 +9,26 @@ package com.team687.frc2018;
 
 public class RobotMap {
 
-    public static final int kRightMasterTalonID = 0;
-    public static final int kLeftMasterTalonID = 1;
+    public static final int kRightMasterTalonID = 2;
+    public static final int kLeftMasterTalonID = 5;
 
     // practice bot
     public static final int kRightSlaveTalon1ID = 4;
-    public static final int kLeftSlaveTalon1ID = 5;
+    public static final int kLeftSlaveTalon1ID = 1;
 
-    // comp bot
-    public static final int kRightSlaveVictorID = 4;
-    public static final int kLeftSlaveVictorID = 5;
+    // // comp bot
+    // public static final int kRightSlaveVictorID = 4;
+    // public static final int kLeftSlaveVictorID = 5;
 
     public static final int kArmID = 7;
     public static final int kWristID = 2;
-    public static final int kIntakeRollers1ID = 6;
-    public static final int kIntakeRollers2ID = 10;
+    public static final int kIntakeRollers1ID = 3;
+    public static final int kIntakeRollers2ID = 0;
 
+    public static final int kClimberWheelLeftID = 16;
+
+    public static final int kClimberWheelRightID = 78;
+    // pneumies
     public static final int kIntakeClawID1 = 0;
     public static final int kIntakeClawID2 = 2;
     

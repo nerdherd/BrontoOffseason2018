@@ -55,10 +55,16 @@ public class OI {
         SmartDashboard.putData("Intake Rollers, 80%", new SetIntakeRollerPower(0.8, 0.8));
         SmartDashboard.putData("Intake Rollers, 100%", new SetIntakeRollerPower(1.0, 1.0));
 
+        SmartDashboard.putData("Intake Rollers, -20%", new SetIntakeRollerPower(-0.2, -0.2));
+        SmartDashboard.putData("Intake Rollers, -40%", new SetIntakeRollerPower(-0.4, -0.4));
+        SmartDashboard.putData("Intake Rollers, -60%", new SetIntakeRollerPower(-0.6, -0.6));
+        SmartDashboard.putData("Intake Rollers, -80%", new SetIntakeRollerPower(-0.8, -0.8));
+        SmartDashboard.putData("Intake Rollers, -100%", new SetIntakeRollerPower(-1.0, -1.0));
+
         intake_1 = new JoystickButton(driveJoyArtic, 1);
         intake_1.whenPressed(new SetIntakeRollerPower(0.5, 0.5));
         outtake_2 = new JoystickButton(driveJoyArtic, 2);
-        outtake_2.whenPressed(new SetIntakeRollerPower(0.5, 0.5));
+        outtake_2.whenPressed(new SetIntakeRollerPower(-0.4, -0.4));
         stopIntake_3 = new JoystickButton(driveJoyArtic, 3);
         stopIntake_3.whenPressed(new SetIntakeRollerPower(0.0, 0.0));
     }
