@@ -70,9 +70,10 @@ public class Intake extends Subsystem {
 	return getCurrent() > SuperstructureConstants.kRollerMaxCurrent;
     }
 
-    public void setRollerPower(double power) {
-    m_rollers1.set(ControlMode.PercentOutput, power);
-    m_rollers2.set(ControlMode.PercentOutput, power);
+    public void setRollerPower(double power1, double power2) {
+    m_rollers1.set(ControlMode.PercentOutput, power1);
+    m_rollers2.set(ControlMode.PercentOutput, power2);
+
     }
 
     public double getVoltage() {

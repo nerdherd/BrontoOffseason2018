@@ -6,10 +6,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeRollers extends Command {
-    private double m_power;
+    private double m_power1, m_power2;
 
-    public IntakeRollers(double power) {
-	m_power = Math.abs(power);
+    public IntakeRollers(double power1, double power2) {
+    m_power1 = Math.abs(power1);
+    m_power2 = Math.abs(power2);
 	requires(Robot.intake);
     }
 
@@ -21,7 +22,7 @@ public class IntakeRollers extends Command {
 
     @Override
     protected void execute() {
-	Robot.intake.setRollerPower(m_power);
+	Robot.intake.setRollerPower(m_power1, m_power2);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class IntakeRollers extends Command {
 
     @Override
     protected void end() {
-	Robot.intake.setRollerPower(0);
+	Robot.intake.setRollerPower(0, 0);
     }
 
     @Override

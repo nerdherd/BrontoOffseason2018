@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 	compressor.start();
 
 	intake = new Intake();
-	intake.setRollerPower(0);
+	intake.setRollerPower(0, 0);
 
 	drive = new Drive();
 	drive.resetEncoders();
