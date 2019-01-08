@@ -77,4 +77,16 @@ public class SuperstructureConstants {
 
     public static final double kAntiFoulThingDeployedPosition = 687;
 
+    public static final double kLeftClimberWheelDeployPos = 1024;
+    public static final double kRightClimberWheelDeployPos = 1024;
+
+    public static final double kLeftClimberP = 1;
+    public static final double kLeftClimberD = 0;
+
+    public static final double kRightClimberP = 1;
+    public static final double kRightClimberD = 0;
+
+
+
+
 }

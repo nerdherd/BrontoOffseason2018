@@ -1,5 +1,6 @@
 package com.team687.frc2018;
 
+import com.team687.frc2018.subsystems.ClimberWheels;
 import com.team687.frc2018.subsystems.Drive;
 import com.team687.frc2018.subsystems.Intake;
 
@@ -18,7 +19,7 @@ public class Robot extends TimedRobot {
 
     public static Drive drive;
     public static Intake intake;
-
+	public static ClimberWheels climber;
     public static DriverStation ds;
     public static PowerDistributionPanel pdp;
     public static Compressor compressor;
@@ -44,9 +45,12 @@ public class Robot extends TimedRobot {
 	drive.resetEncoders();
 	drive.resetYaw();
 
+	climber = new ClimberWheels();
 	oi = new OI();
 	ds = DriverStation.getInstance();
 	// CameraServer.getInstance().startAutomaticCapture();
+	
+	
     }
 
     @Override
@@ -72,6 +76,7 @@ public class Robot extends TimedRobot {
 	drive.calcXY();
 	drive.reportToSmartDashboard();
 	intake.reportToSmartDashboard();
+	climber.reportToSmartDashboard();
     }
 
     @Override

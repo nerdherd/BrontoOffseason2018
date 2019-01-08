@@ -8,16 +8,15 @@
 package com.team687.frc2018.commands;
 
 import com.team687.frc2018.Robot;
-import com.team687.frc2018.constants.SuperstructureConstants;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DeployClimberWheels extends Command {
+public class SetClimberWheelPower extends Command {
 
-  private double m_power;
+  double m_power;
 
-  public DeployClimberWheels() {
-    // m_power = power;
+  public SetClimberWheelPower(double power) {
+    m_power = power;
     requires(Robot.climber);
   }
 
@@ -29,8 +28,7 @@ public class DeployClimberWheels extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.climber.setClimberWheelPower(m_power);
-    Robot.climber.setClimberPosition(SuperstructureConstants.kLeftClimberWheelDeployPos, SuperstructureConstants.kRightClimberWheelDeployPos);
+    Robot.climber.setClimberWheelPower(m_power);
   }
 
   // Make this return true when this Command no longer needs to run execute()

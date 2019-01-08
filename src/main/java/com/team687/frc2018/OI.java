@@ -1,5 +1,8 @@
 package com.team687.frc2018;
 
+import com.team687.frc2018.commands.DeployClimberWheels;
+import com.team687.frc2018.commands.*;
+
 import com.team687.frc2018.commands.drive.auto.DriveTime;
 import com.team687.frc2018.commands.drive.auto.DriveTrajectory;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
@@ -34,7 +37,7 @@ public class OI {
     public JoystickButton intake_1;
     public JoystickButton outtake_2;
     public JoystickButton stopIntake_3;
-    public JoystickButton openCloseClaw_4;
+    public JoystickButton deployClimberWheels_4;
     // public JoystickButton intakePosition_4;
 
     public JoystickButton switchPosition_11;
@@ -44,7 +47,7 @@ public class OI {
     public JoystickButton defaultStow_10;
 
     public JoystickButton openClaw_6;
-    public JoystickButton closeClaw_5;
+    public JoystickButton retractClimberWheels_5;
 
     public JoystickButton flipCube_12;
 
@@ -61,12 +64,26 @@ public class OI {
         SmartDashboard.putData("Intake Rollers, -80%", new SetIntakeRollerPower(-0.8, -0.8));
         SmartDashboard.putData("Intake Rollers, -100%", new SetIntakeRollerPower(-1.0, -1.0));
 
+        SmartDashboard.putData("Deploy Climber Wheels", new DeployClimberWheels());
+
+        SmartDashboard.putData("Retract Climber Wheel Power -0.1", new SetClimberWheelPower(-0.1));
+        SmartDashboard.putData("Reset Climber Wheel Encoders", new ResetClimberEncoders());
+        // SmartDashboard
+
+        
+
+        // SmartDashboard.putData("");
+
         intake_1 = new JoystickButton(driveJoyArtic, 1);
         intake_1.whenPressed(new SetIntakeRollerPower(0.5, 0.5));
         outtake_2 = new JoystickButton(driveJoyArtic, 2);
         outtake_2.whenPressed(new SetIntakeRollerPower(-0.4, -0.4));
         stopIntake_3 = new JoystickButton(driveJoyArtic, 3);
         stopIntake_3.whenPressed(new SetIntakeRollerPower(0.0, 0.0));
+        // deployClimberWheels_4 = new JoystickButton(driveJoyArtic, 4);
+        // deployClimberWheels_4.whenPressed(new DeployClimberWheels(0.75));
+        // retractClimberWheels_5 = new JoystickButton(driveJoyArtic, 5);
+        // retractClimberWheels_5.whenPressed(new DeployClimberWheels(-0.75));
     }
 
     /**
