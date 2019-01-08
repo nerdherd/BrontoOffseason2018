@@ -22,12 +22,12 @@ public class RobotMap {
 
     public static final int kArmID = 7;
     public static final int kWristID = 2;
-    public static final int kIntakeRollers1ID = 3;
-    public static final int kIntakeRollers2ID = 0;
+    public static final int kIntakeRollers1ID = 30;
+    public static final int kIntakeRollers2ID = 70;
 
-    public static final int kClimberWheelLeftID = 16;
+    public static final int kClimberWheelLeftID = 0;
 
-    public static final int kClimberWheelRightID = 78;
+    public static final int kClimberWheelRightID = 3;
     // pneumies
     public static final int kIntakeClawID1 = 0;
     public static final int kIntakeClawID2 = 2;
