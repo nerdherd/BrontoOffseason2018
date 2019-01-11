@@ -11,10 +11,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveDistanceMotionMagic extends Command {
 
 	private double m_distance;
-	private double m_error;
+    private double m_error;
+    private int m_accel, m_cruiseVel;
+    
 	
-    public DriveDistanceMotionMagic(double distance) {
-    	m_distance = distance;
+    public DriveDistanceMotionMagic(double distance, double accel, double cruiseVel) {
+        m_distance = distance;
+        m_accel = (int) accel;
+        m_cruiseVel = (int) cruiseVel;
        requires(Robot.drive);
     }
 
@@ -26,7 +30,7 @@ public class DriveDistanceMotionMagic extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	m_error = m_distance - Robot.drive.getAverageEncoderPosition();
-    	Robot.drive.setPositionMotionMagic(m_distance, m_distance);
+    	Robot.drive.setPositionMotionMagic(m_distance, m_distance, m_accel, m_cruiseVel);
     }
 
     // Make this return true when this Command no longer needs to run execute()

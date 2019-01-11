@@ -1,21 +1,9 @@
 package com.team687.frc2018;
 
-import com.team687.frc2018.commands.DeployClimberWheels;
-import com.team687.frc2018.commands.*;
-
-import com.team687.frc2018.commands.drive.auto.DriveTime;
-import com.team687.frc2018.commands.drive.auto.DriveTrajectory;
-import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
-import com.team687.frc2018.commands.drive.auto.ResetGyro;
+import com.team687.frc2018.commands.drive.auto.DriveDistanceMotionMagic;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
-import com.team687.frc2018.commands.drive.characterization.VelocityTest;
-import com.team687.frc2018.commands.intake.ClawClose;
-import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
-import com.team687.frc2018.commands.routines.ChainedPathAuto;
-import com.team687.frc2018.constants.AutoConstants;
-import com.team687.frc2018.constants.SuperstructureConstants;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -52,23 +40,23 @@ public class OI {
     public JoystickButton flipCube_12;
 
     public OI() {
-        SmartDashboard.putData("Intake Rollers, 20%", new SetIntakeRollerPower(0.2, 0.2));
-        SmartDashboard.putData("Intake Rollers, 40%", new SetIntakeRollerPower(0.4, 0.4));
-        SmartDashboard.putData("Intake Rollers, 60%", new SetIntakeRollerPower(0.6, 0.6));
-        SmartDashboard.putData("Intake Rollers, 80%", new SetIntakeRollerPower(0.8, 0.8));
-        SmartDashboard.putData("Intake Rollers, 100%", new SetIntakeRollerPower(1.0, 1.0));
+        // SmartDashboard.putData("Intake Rollers, 20%", new SetIntakeRollerPower(0.2, 0.2));
+        // SmartDashboard.putData("Intake Rollers, 40%", new SetIntakeRollerPower(0.4, 0.4));
+        // SmartDashboard.putData("Intake Rollers, 60%", new SetIntakeRollerPower(0.6, 0.6));
+        // SmartDashboard.putData("Intake Rollers, 80%", new SetIntakeRollerPower(0.8, 0.8));
+        // SmartDashboard.putData("Intake Rollers, 100%", new SetIntakeRollerPower(1.0, 1.0));
 
-        SmartDashboard.putData("Intake Rollers, -20%", new SetIntakeRollerPower(-0.2, -0.2));
-        SmartDashboard.putData("Intake Rollers, -40%", new SetIntakeRollerPower(-0.4, -0.4));
-        SmartDashboard.putData("Intake Rollers, -60%", new SetIntakeRollerPower(-0.6, -0.6));
-        SmartDashboard.putData("Intake Rollers, -80%", new SetIntakeRollerPower(-0.8, -0.8));
-        SmartDashboard.putData("Intake Rollers, -100%", new SetIntakeRollerPower(-1.0, -1.0));
+        // SmartDashboard.putData("Intake Rollers, -20%", new SetIntakeRollerPower(-0.2, -0.2));
+        // SmartDashboard.putData("Intake Rollers, -40%", new SetIntakeRollerPower(-0.4, -0.4));
+        // SmartDashboard.putData("Intake Rollers, -60%", new SetIntakeRollerPower(-0.6, -0.6));
+        // SmartDashboard.putData("Intake Rollers, -80%", new SetIntakeRollerPower(-0.8, -0.8));
+        // SmartDashboard.putData("Intake Rollers, -100%", new SetIntakeRollerPower(-1.0, -1.0));
 
-        SmartDashboard.putData("Deploy Climber Wheels", new DeployClimberWheels());
-        SmartDashboard.putData("Deploy Climber Wheel Power 0.3", new SetClimberWheelPower(0.3));
-        SmartDashboard.putData("Deploy Climber Wheel Power 0.6", new SetClimberWheelPower(0.6));
-        SmartDashboard.putData("Retract Climber Wheel Power -0.1", new SetClimberWheelPower(-0.1));
-        SmartDashboard.putData("Reset Climber Wheel Encoders", new ResetClimberEncoders());
+        // SmartDashboard.putData("Deploy Climber Wheels", new DeployClimberWheels());
+        // SmartDashboard.putData("Deploy Climber Wheel Power 0.3", new SetClimberWheelPower(0.3));
+        // SmartDashboard.putData("Deploy Climber Wheel Power 0.6", new SetClimberWheelPower(0.6));
+        // SmartDashboard.putData("Retract Climber Wheel Power -0.1", new SetClimberWheelPower(-0.1));
+        // SmartDashboard.putData("Reset Climber Wheel Encoders", new ResetClimberEncoders());
         // SmartDashboard
 
         
@@ -85,8 +73,13 @@ public class OI {
         // deployClimberWheels_4.whenPressed(new DeployClimberWheels(0.75));
         // retractClimberWheels_5 = new JoystickButton(driveJoyArtic, 5);
         // retractClimberWheels_5.whenPressed(new DeployClimberWheels(-0.75));
+
+        SmartDashboard.putData("Drive Characterize", new DriveCharacterizationTest(0.25));
+        SmartDashboard.putData("Drive Open Loop 6 V", new OpenLoopDrive(0.5));
+        SmartDashboard.putData("Drive Motion Magic", new DriveDistanceMotionMagic(15000, 0, 0));
     }
 
+    
     /**
      * @return input power from left drive joystick Y (-1.0 to +1.0)
      */

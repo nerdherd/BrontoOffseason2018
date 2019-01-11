@@ -111,15 +111,22 @@ public class Drive extends Subsystem {
 		m_rightDesiredVel = rightVel;
 	}
 
-	public void setPositionMotionMagic(double leftPosition, double rightPosition) {
-		m_leftMaster.set(ControlMode.MotionMagic, leftPosition);
-		m_rightMaster.set(ControlMode.MotionMagic, rightPosition);
+	public void setPositionMotionMagic(double leftPosition, double rightPosition, int acceleration, int cruiseVelocity) {
+		m_leftMaster.configMotionMagic(acceleration, cruiseVelocity);
+		m_rightMaster.configMotionMagic(acceleration, cruiseVelocity);
+		m_leftMaster.set(ControlMode.MotionMagic, leftPosition, DemandType.ArbitraryFeedForward, DriveConstants.kLeftStatic);
+		m_rightMaster.set(ControlMode.MotionMagic, rightPosition, DemandType.ArbitraryFeedForward, DriveConstants.kRightStatic);
 	}
 	
 	public void setVelocity(double leftVel, double rightVel) {
-		m_rightMaster.set(ControlMode.Velocity, rightVel, DemandType.ArbitraryFeedForward, DriveConstants.kRightStatic);
-		m_leftMaster.set(ControlMode.Velocity, leftVel, DemandType.ArbitraryFeedForward, DriveConstants.kLeftStatic);
-		
+		if (Math.abs(leftVel) > DriveConstants.kLeftCruiseVelocity) {
+			leftVel = DriveConstants.kLeftCruiseVelocity * Math.signum(leftVel);
+		}
+		if (Math.abs(rightVel) > DriveConstants.kRightCruiseVelocity) {
+			rightVel = DriveConstants.kRightCruiseVelocity * Math.signum(rightVel);
+		}
+		m_rightMaster.set(ControlMode.Velocity, rightVel, DemandType.ArbitraryFeedForward, DriveConstants.kRightStatic * Math.signum(rightVel));
+		m_leftMaster.set(ControlMode.Velocity, leftVel, DemandType.ArbitraryFeedForward, DriveConstants.kLeftStatic * Math.signum(leftVel));
 	}
 	
 	public void resetEncoders() {
