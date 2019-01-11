@@ -65,7 +65,8 @@ public class OI {
         SmartDashboard.putData("Intake Rollers, -100%", new SetIntakeRollerPower(-1.0, -1.0));
 
         SmartDashboard.putData("Deploy Climber Wheels", new DeployClimberWheels());
-
+        SmartDashboard.putData("Deploy Climber Wheel Power 0.3", new SetClimberWheelPower(0.3));
+        SmartDashboard.putData("Deploy Climber Wheel Power 0.6", new SetClimberWheelPower(0.6));
         SmartDashboard.putData("Retract Climber Wheel Power -0.1", new SetClimberWheelPower(-0.1));
         SmartDashboard.putData("Reset Climber Wheel Encoders", new ResetClimberEncoders());
         // SmartDashboard

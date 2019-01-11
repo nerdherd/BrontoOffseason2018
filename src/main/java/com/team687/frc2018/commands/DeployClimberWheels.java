@@ -31,7 +31,12 @@ public class DeployClimberWheels extends Command {
   @Override
   protected void execute() {
     // Robot.climber.setClimberWheelPower(m_power);
-    Robot.climber.setClimberPosition(SuperstructureConstants.kLeftClimberWheelDeployPos, SuperstructureConstants.kRightClimberWheelDeployPos);
+    if (Robot.climber.getClimberPosition() < 1024) {
+      Robot.climber.setClimberWheelPower(0.3);
+    } else {
+      Robot.climber.setClimberPosition(SuperstructureConstants.kLeftClimberWheelDeployPos, SuperstructureConstants.kRightClimberWheelDeployPos);
+    }
+    // Robot.climber.setClimberPosition(SuperstructureConstants.kLeftClimberWheelDeployPos, SuperstructureConstants.kRightClimberWheelDeployPos);
   }
 
   // Make this return true when this Command no longer needs to run execute()
