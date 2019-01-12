@@ -33,7 +33,7 @@ public class Drive extends Subsystem {
     
     private String m_filePath1 = "/media/sda1/logs/";
 	private String m_filePath2 = "/home/lvuser/logs/";
-	private String m_fileName = Robot.kDate + "pathfinder_test_drive";
+	private String m_fileName = Robot.kDate + "drive_characterization";
     private File m_file;
     public FileWriter m_writer;
     private boolean writeException = false;

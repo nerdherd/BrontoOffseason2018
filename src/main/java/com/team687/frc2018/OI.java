@@ -1,6 +1,8 @@
 package com.team687.frc2018;
 
 import com.team687.frc2018.commands.drive.auto.DriveDistanceMotionMagic;
+import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
+import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
@@ -77,9 +79,11 @@ public class OI {
         SmartDashboard.putData("Drive Characterize", new DriveCharacterizationTest(0.25));
         SmartDashboard.putData("Drive Open Loop 6 V", new OpenLoopDrive(0.5));
         SmartDashboard.putData("Drive Motion Magic", new DriveDistanceMotionMagic(15000, 0, 0));
+        SmartDashboard.putData("Reset Drive Encoders", new ResetDriveEncoders());
+        SmartDashboard.putData("Reset Gyro", new ResetGyro());
     }
 
-    
+
     /**
      * @return input power from left drive joystick Y (-1.0 to +1.0)
      */
