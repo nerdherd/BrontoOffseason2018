@@ -4,25 +4,29 @@ public class DriveConstants {
 
 //	TalonSRX Constants
 	public static final double kLeftP = 0.1;
+	// public static final double kLeftP = 0;
 	public static final double kLeftI = 0;
-	public static final double kLeftD = 0.619;
+	// public static final double kLeftD = 0.619;
+	public static final double kLeftD = 0;
 	public static final double kLeftF = 0.25169975;
 	
 	
+	// public static final double kRightP = 0;
 	public static final double kRightP = 0.1;
 	public static final double kRightI = 0;
-	public static final double kRightD = 0.619;
-	public static final double kRightF = 0.204386;
+	public static final double kRightD = 0;
+	// public static final double kRightD = 0.619;
+	public static final double kRightF = 0.24441175;
 	
 	public static final double kLeftStatic = 1.242/12;
 
-	public static final double kRightStatic = 1.441/12;
+	public static final double kRightStatic = 1.338/12;
 
-	public static final int kLeftAcceleration = 0;
-	public static final int kLeftCruiseVelocity = 0;
+	public static final int kLeftAcceleration = 1000;
+	public static final int kLeftCruiseVelocity = 3000;
 	
-	public static final int kRightAcceleration = 0;
-	public static final int kRightCruiseVelocity = 0;
+	public static final int kRightAcceleration = 1000;
+	public static final int kRightCruiseVelocity = 3000;
 
 //	Rot PID Constants
 	public static final double kDriveRotationTolerance = 0;

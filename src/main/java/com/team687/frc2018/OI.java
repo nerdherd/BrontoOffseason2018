@@ -6,6 +6,7 @@ import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
+import com.team687.frc2018.constants.DriveConstants;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -78,7 +79,7 @@ public class OI {
 
         SmartDashboard.putData("Drive Characterize", new DriveCharacterizationTest(0.25));
         SmartDashboard.putData("Drive Open Loop 6 V", new OpenLoopDrive(0.5));
-        SmartDashboard.putData("Drive Motion Magic", new DriveDistanceMotionMagic(15000, 0, 0));
+        SmartDashboard.putData("Drive Motion Magic", new DriveDistanceMotionMagic(15000, DriveConstants.kLeftAcceleration*0.3 , DriveConstants.kLeftCruiseVelocity * 0.3));
         SmartDashboard.putData("Reset Drive Encoders", new ResetDriveEncoders());
         SmartDashboard.putData("Reset Gyro", new ResetGyro());
     }
