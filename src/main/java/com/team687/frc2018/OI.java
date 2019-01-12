@@ -5,6 +5,8 @@ import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
 import com.team687.frc2018.commands.drive.characterization.DriveCharacterizationTest;
 import com.team687.frc2018.commands.drive.characterization.OpenLoopDrive;
+import com.team687.frc2018.commands.intake.ClawClose;
+import com.team687.frc2018.commands.intake.ClawOpen;
 import com.team687.frc2018.commands.intake.SetIntakeRollerPower;
 import com.team687.frc2018.constants.DriveConstants;
 
@@ -60,8 +62,9 @@ public class OI {
         // SmartDashboard.putData("Deploy Climber Wheel Power 0.6", new SetClimberWheelPower(0.6));
         // SmartDashboard.putData("Retract Climber Wheel Power -0.1", new SetClimberWheelPower(-0.1));
         // SmartDashboard.putData("Reset Climber Wheel Encoders", new ResetClimberEncoders());
-        // SmartDashboard
-
+        // SmartDashboard.putData("Piston push", new ClawClose());
+        // SmartDashboard.putData("Piston pull", new ClawOpen());
+        
         
 
         // SmartDashboard.putData("");

@@ -142,7 +142,7 @@ public class Drive extends Subsystem {
 	}
 	
 	public double getLeftMasterPosition() {
-		return m_leftMaster.getSelectedSensorPosition(0);
+		return m_leftMaster.getSelectedSensorPosition();
 	}
 	
 	public double getLeftMasterSpeed() {
@@ -159,7 +159,7 @@ public class Drive extends Subsystem {
 	}
 	
 	public double getRightMasterPosition() {
-		return m_rightMaster.getSelectedSensorPosition(0);
+		return m_rightMaster.getSelectedSensorPosition();
 	}
 	
 	public double getRightMasterSpeed() {

@@ -10,11 +10,11 @@ package com.team687.frc2018;
 public class RobotMap {
 
     public static final int kRightMasterTalonID = 2;
-    public static final int kLeftMasterTalonID = 5;
+    public static final int kLeftMasterTalonID = 1;
 
     // practice bot
     public static final int kRightSlaveTalon1ID = 4;
-    public static final int kLeftSlaveTalon1ID = 1;
+    public static final int kLeftSlaveTalon1ID = 5;
 
     // // comp bot
     // public static final int kRightSlaveVictorID = 4;

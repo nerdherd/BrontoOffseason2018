@@ -3,22 +3,22 @@ package com.team687.frc2018.constants;
 public class DriveConstants {
 
 //	TalonSRX Constants
-	public static final double kLeftP = 0.1;
+	public static final double kLeftP = 0.2;
 	// public static final double kLeftP = 0;
 	public static final double kLeftI = 0;
 	// public static final double kLeftD = 0.619;
 	public static final double kLeftD = 0;
-	public static final double kLeftF = 0.25169975;
+	public static final double kLeftF = 0.264275;
 	
 	
 	// public static final double kRightP = 0;
-	public static final double kRightP = 0.1;
+	public static final double kRightP = 0.2;
 	public static final double kRightI = 0;
 	public static final double kRightD = 0;
 	// public static final double kRightD = 0.619;
 	public static final double kRightF = 0.24441175;
 	
-	public static final double kLeftStatic = 1.242/12;
+	public static final double kLeftStatic = 1.399/12;
 
 	public static final double kRightStatic = 1.338/12;
 
