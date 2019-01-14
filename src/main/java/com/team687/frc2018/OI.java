@@ -1,5 +1,6 @@
 package com.team687.frc2018;
 
+import com.nerdherd.lib.AbstractOI;
 import com.team687.frc2018.commands.drive.auto.DriveDistanceMotionMagic;
 import com.team687.frc2018.commands.drive.auto.ResetDriveEncoders;
 import com.team687.frc2018.commands.drive.auto.ResetGyro;
@@ -19,11 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * interface to the commands and command groups that allow control of the robot.
  */
 
-public class OI {
+public class OI extends AbstractOI {
 
     public Joystick driveJoyLeft = new Joystick(0);
     public Joystick driveJoyRight = new Joystick(1);
-    public Joystick driveJoyArtic = new Joystick(2);
+    public Joystick operatorJoy = new Joystick(2);
 
     // public Joystick gamepadJoy = new Joystick(0);
 
@@ -69,15 +70,15 @@ public class OI {
 
         // SmartDashboard.putData("");
 
-        intake_1 = new JoystickButton(driveJoyArtic, 1);
+        intake_1 = new JoystickButton(operatorJoy, 1);
         intake_1.whenPressed(new SetIntakeRollerPower(0.5, 0.5));
-        outtake_2 = new JoystickButton(driveJoyArtic, 2);
+        outtake_2 = new JoystickButton(operatorJoy, 2);
         outtake_2.whenPressed(new SetIntakeRollerPower(-0.4, -0.4));
-        stopIntake_3 = new JoystickButton(driveJoyArtic, 3);
+        stopIntake_3 = new JoystickButton(operatorJoy, 3);
         stopIntake_3.whenPressed(new SetIntakeRollerPower(0.0, 0.0));
-        // deployClimberWheels_4 = new JoystickButton(driveJoyArtic, 4);
+        // deployClimberWheels_4 = new JoystickButton(operatorJoy, 4);
         // deployClimberWheels_4.whenPressed(new DeployClimberWheels(0.75));
-        // retractClimberWheels_5 = new JoystickButton(driveJoyArtic, 5);
+        // retractClimberWheels_5 = new JoystickButton(operatorJoy, 5);
         // retractClimberWheels_5.whenPressed(new DeployClimberWheels(-0.75));
 
         SmartDashboard.putData("Drive Characterize", new DriveCharacterizationTest(0.25));
@@ -120,18 +121,14 @@ public class OI {
         return driveJoyRight.getX();
     }
 
-    /**
-     * @return input throttle from right drive joystick (0 to +1.0)
-     */
-    public double getThrottleR() {
-        return (driveJoyRight.getThrottle() + 1) / 2;
+    @Override
+    public double getOperatorJoyX() {
+        return operatorJoy.getX();
     }
 
-    /**
-     * @return input throttle from left drive josytick
-     */
-    public double getThrottleL() {
-        return (driveJoyLeft.getThrottle() + 1) / 2;
+    @Override
+    public double getOperatorJoyY() {
+        return operatorJoy.getY();
     }
 
 }

@@ -1,8 +1,8 @@
 package com.team687.frc2018.commands.drive.auto;
 
-import com.team687.frc2018.constants.DriveConstants;
-import com.team687.frc2018.utilities.NerdyMath;
+import com.nerdherd.lib.misc.NerdyMath;
 import com.team687.frc2018.Robot;
+import com.team687.frc2018.constants.DriveConstants;
 
 import edu.wpi.first.wpilibj.command.Command;
 

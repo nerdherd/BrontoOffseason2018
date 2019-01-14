@@ -10,11 +10,12 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
+import com.nerdherd.lib.drivers.NerdyTalon;
+import com.team687.frc2018.Robot;
 import com.team687.frc2018.RobotMap;
 import com.team687.frc2018.commands.drive.teleop.ArcadeDrive;
 import com.team687.frc2018.constants.DriveConstants;
-import com.team687.frc2018.utilities.NerdyTalon;
-import com.team687.frc2018.Robot;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;

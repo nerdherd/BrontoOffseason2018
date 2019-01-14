@@ -7,8 +7,8 @@
 
 package com.team687.frc2018.commands.drive.auto;
 
+import com.nerdherd.lib.drivetrain.trajectory.TrajectoryFollower;
 import com.team687.frc2018.Robot;
-import com.team687.frc2018.utilities.TrajectoryFollower;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
