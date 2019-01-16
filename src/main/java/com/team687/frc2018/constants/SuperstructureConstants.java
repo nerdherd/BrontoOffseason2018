@@ -23,7 +23,7 @@ public class SuperstructureConstants {
     public static final int kArmAngleOffsetWhenDown = 54;
 
     public static final int kArmDownPos = 0;
-    public static final int kArmOffsetPos = 500;
+    public static final int kArmOffsetPos = 687;
     public static final int kArmSwitchPos = 3000;
     public static final int kArmHorizontalPos = 5200;
     public static final int kArmVerticalPos = 12000;
@@ -76,5 +76,14 @@ public class SuperstructureConstants {
     public static final double kAntiFoulThingkP = 1;
 
     public static final double kAntiFoulThingDeployedPosition = 687;
+
+    public static final double kLeftClimberWheelDeployPos = 1024;
+    public static final double kRightClimberWheelDeployPos = 1024;
+
+    public static final double kLeftClimberP = 0.3;
+    public static final double kLeftClimberD = 0;
+
+    public static final double kRightClimberP = 0.5;
+    public static final double kRightClimberD = 0;
 
 }
