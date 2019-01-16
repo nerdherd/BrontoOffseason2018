@@ -1,53 +1,45 @@
 package com.team687.frc2018.commands.drive.teleop;
 
 import com.team687.frc2018.Robot;
-import com.team687.frc2018.utilities.NerdyMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Tank drive with sensitivity adjustments
+ *
  */
-
-
 public class ArcadeDrive extends Command {
 
+	private double m_leftPower, m_rightPower;
+	
     public ArcadeDrive() {
-	// subsystem dependencies
-	requires(Robot.drive);
+    	requires(Robot.drive);
     }
 
-    @Override
+    // Called just before this Command runs the first time
     protected void initialize() {
-	SmartDashboard.putString("Current Drive Command", "ArcadeDrive");
-	Robot.drive.stopDrive();
+    	SmartDashboard.putString("Current Command", "Arcade Drive");
     }
 
-    @Override
+    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-	// double leftPow = Robot.drive.addLeftSensitivity(Robot.oi.getDriveJoyLeftY());
-	// double rightPow =
-	// Robot.drive.addRightSensitivity(Robot.oi.getDriveJoyRightY());
-
-	double straightPower = NerdyMath.squareInput(Robot.oi.getDriveJoyLeftY());
-	double rotPower = NerdyMath.squareInput(Robot.oi.getDriveJoyRightX());
-	Robot.drive.setPower(straightPower + rotPower, straightPower - rotPower);
+    	m_leftPower = Robot.oi.getDriveJoyLeftX() + Robot.oi.getDriveJoyRightY();
+    	m_rightPower = -Robot.oi.getDriveJoyLeftX() + Robot.oi.getDriveJoyRightY();
+    	
+    	Robot.drive.setPower(m_leftPower, m_rightPower);
     }
 
-    @Override
+    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-	return false;
+        return false;
     }
 
-    @Override
+    // Called once after isFinished returns true
     protected void end() {
-	Robot.drive.stopDrive();
     }
 
-    @Override
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
     protected void interrupted() {
-	end();
     }
-
 }

@@ -18,7 +18,6 @@ public class CommandTemplate extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "CommandTemplate");
-	Robot.drive.stopDrive();
     }
 
     @Override
@@ -32,7 +31,6 @@ public class CommandTemplate extends Command {
 
     @Override
     protected void end() {
-	Robot.drive.stopDrive();
     }
 
     @Override
